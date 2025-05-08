@@ -2,6 +2,7 @@
 
 require_once(__DIR__ . '/../../rutas.php');
 require_once(CONFIG . 'dbConnection.php'); 
+require_once(MODEL . 'Usuario.php');
 
 class UsuarioController {
     
@@ -14,15 +15,15 @@ class UsuarioController {
     }
 
     // Crear un nuevo usuario
-    public function crearUsuario($nombre_usuario, $email, $contraseña) {  // Cambié 'correo' a 'email'
+    public function crearUsuario($nombre_usuario, $email, $contraseña) {
         // Verificar si el nombre de usuario ya existe
         if (Usuario::nombreUsuarioExistente($nombre_usuario)) {
             echo "<p>El nombre de usuario ya está en uso.</p>";
             return;
         }
     
-        // Verificar si el correo ya está registrado
-        if (Usuario::emailExistente($email)) {  // Cambié 'correo' a 'email'
+        // Verificar si el email ya está registrado
+        if (Usuario::emailExistente($email)) {
             echo "<p>El correo ya está registrado.</p>";
             return;
         }
@@ -30,9 +31,11 @@ class UsuarioController {
         // Crear una instancia de Usuario
         $nuevoUsuario = new Usuario();
         $nuevoUsuario->setNombreUsuario($nombre_usuario);
-        $nuevoUsuario->setEmail($email);  // Cambié 'correo' a 'email'
-        $nuevoUsuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));  // Asegúrate de hashear la contraseña
-    
+        $nuevoUsuario->setEmail($email);
+
+        // Hashear la contraseña aquí (¡NO antes!)
+        $nuevoUsuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
+
         // Guardar el usuario en la base de datos
         $nuevoUsuario->create();
     }

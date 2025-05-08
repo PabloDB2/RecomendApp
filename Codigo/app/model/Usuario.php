@@ -28,7 +28,7 @@ class Usuario
         $this->nombre_usuario = $nombre_usuario;
     }
 
-    public function setEmail($email)  
+    public function setEmail($email)
     {
         $this->email = $email;
     }
@@ -41,9 +41,9 @@ class Usuario
     public function create() {
         try {
             $conn = getDBConnection();
-            $sentencia = $conn->prepare("INSERT INTO usuarios (nombre_usuario, email, contraseña) VALUES (?, ?, ?)");  
+            $sentencia = $conn->prepare("INSERT INTO usuarios (nombre_usuario, email, contraseña) VALUES (?, ?, ?)");
             $sentencia->bindParam(1, $this->nombre_usuario);
-            $sentencia->bindParam(2, $this->email);  
+            $sentencia->bindParam(2, $this->email);
             $sentencia->bindParam(3, $this->contraseña);
             $sentencia->execute();
         } catch (PDOException $e) {
@@ -63,8 +63,8 @@ class Usuario
             if ($result) {
                 $usuario = new Usuario();
                 $usuario->setNombreUsuario($result['nombre_usuario']);
-                $usuario->setEmail($result['email']); 
-                $usuario->setContraseña($result['contraseña']);
+                $usuario->setEmail($result['email']);
+                $usuario->setContraseña($result['contraseña']); 
                 return $usuario;
             }
 
@@ -79,16 +79,12 @@ class Usuario
     {
         try {
             $conn = getDBConnection();
-            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?"); 
+            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
             $stmt->bindParam(1, $email);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return true;
-            }
-
-            return false;
+            return $result ? true : false;
         } catch (PDOException $e) {
             echo "Error al comprobar email: " . $e->getMessage();
             return false;
@@ -104,11 +100,7 @@ class Usuario
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return true;
-            }
-
-            return false;
+            return $result ? true : false;
         } catch (PDOException $e) {
             echo "Error al comprobar nombre de usuario: " . $e->getMessage();
             return false;
@@ -124,7 +116,8 @@ class Usuario
             return $result;
         } catch (PDOException $e) {
             echo "Error al ejecutar la query". $e->getMessage();
-            return []; 
+            return [];
         }
     }
 }
+?>
