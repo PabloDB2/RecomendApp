@@ -5,8 +5,20 @@ require_once(CONFIG . 'dbConnection.php');
 class Usuario
 {
     private $nombre_usuario;
-    private $email;  
+    private $email;
     private $contraseña;
+
+    private $id_usuario;
+
+    public function getIdUsuario()
+    {
+        return $this->id_usuario;
+    }
+
+    public function setIdUsuario($id_usuario)
+    {
+        $this->id_usuario = $id_usuario;
+    }
 
     public function getNombreUsuario()
     {
@@ -38,7 +50,8 @@ class Usuario
         $this->contraseña = $contraseña;
     }
 
-    public function create() {
+    public function create()
+    {
         try {
             $conn = getDBConnection();
             $sentencia = $conn->prepare("INSERT INTO usuarios (nombre_usuario, email, contraseña) VALUES (?, ?, ?)");
@@ -62,15 +75,44 @@ class Usuario
 
             if ($result) {
                 $usuario = new Usuario();
+                $usuario->setIdUsuario($result['id_usuario']);
+
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
-                $usuario->setContraseña($result['contraseña']); 
+                $usuario->setContraseña($result['contraseña']);
                 return $usuario;
             }
 
             return null;
         } catch (PDOException $e) {
             echo "Error al obtener el usuario: " . $e->getMessage();
+            return null;
+        }
+    }
+
+    public static function getUserByEmail($email)
+    {
+        try {
+            $conn = getDBConnection();
+            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+            $stmt->bindParam(1, $email);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+
+                $usuario = new Usuario();
+                $usuario->setIdUsuario($result['id_usuario']);
+
+                $usuario->setNombreUsuario($result['nombre_usuario']);
+                $usuario->setEmail($result['email']);
+                $usuario->setContraseña($result['contraseña']);
+                return $usuario;
+            }
+
+            return null;
+        } catch (PDOException $e) {
+            echo "Error al obtener el usuario por email: " . $e->getMessage();
             return null;
         }
     }
@@ -115,9 +157,8 @@ class Usuario
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
-            echo "Error al ejecutar la query". $e->getMessage();
+            echo "Error al ejecutar la query" . $e->getMessage();
             return [];
         }
     }
 }
-?>

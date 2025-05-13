@@ -1,115 +1,116 @@
 body {
-    background-color: var(--black);
-    color: var(--white-green);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .signup-form-container {
-    background: rgba(20, 20, 20, 0.7);
-    backdrop-filter: blur(8px);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-  }
-  
-  h2 {
-    color: var(--green);
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
-  
-  .textoPrincipal {
-    color: var(--white-green);
-    text-align: center;
-    margin-bottom: 1.5rem;
-    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-  }
-  
-  .form-label {
-    font-weight: 500;
-    color: var(--white-green);
-    margin-bottom: 0.5rem;
-  }
-  
-  .form-control {
-    border: 1px solid var(--orange);
-    padding: 0.75rem;
-    border-radius: 5px;
-    background-color: var(--black-dark);
-    color: var(--white-green);
-    margin-bottom: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-  }
-  
-  .form-control::placeholder {
-    color: var(--gray);
-    opacity: 0.8;
-  }
-  
-  .form-control:focus {
-    background-color: var(--black-dark);
-    color: white;
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
-    transform: scale(1.02);
-  }
-  
-  .form-control.valid-input {
-    border-color: var(--primary-green) !important;
-  }
-  
-  .form-control.invalid-input {
-    border-color:var(--error) !important;
-  }
-  
-  .btn-signup {
-    background-color: var(--primary-green);
-    color: white;
-    padding: 0.75rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    margin-top: 1.5rem;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-  }
-  
-  .btn-signup:hover {
-    background-color: var(--dark-green);
-  }
-  
-  .login-link {
-    color: var(--orange);
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-  
-  .login-link:hover {
-    color: var(--primary-green);
-    text-decoration: underline;
-  }
-  
-  .error-message {
-    color: var(--error);
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-    display: none;
-  }
-  input:-webkit-autofill,
-input:-webkit-autofill:focus {
-    background-color: var(--black-dark) !important;
-    color: var(--white-green) !important;
-    -webkit-text-fill-color: var(--white-green) !important;
-    transition: background-color 5000s ease-in-out 0s; /* truco para mantener color */
-    box-shadow: 0 0 0px 1000px var(--black-dark) inset !important;
+  background-color: var(--black);
+  color: var(--white-green);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
-  
+
+.signup-form-container {
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  color: var(--green);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.textoPrincipal {
+  color: var(--white-green);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--white-green);
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  border: 1px solid var(--orange);
+  padding: 0.75rem;
+  border-radius: 5px;
+  background-color: var(--black-dark);
+  color: var(--white-green);
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.form-control::placeholder {
+  color: var(--gray);
+  opacity: 0.8;
+}
+
+.form-control:focus {
+  background-color: var(--black-dark);
+  color: white;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
+  transform: scale(1.02);
+}
+
+.form-control.valid-input {
+  border-color: var(--primary-green) !important;
+}
+
+.form-control.invalid-input {
+  border-color: var(--error) !important;
+}
+
+.btn-signup {
+  background-color: var(--primary-green);
+  color: white;
+  padding: 0.75rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  margin-top: 1.5rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-signup:hover {
+  background-color: var(--dark-green);
+}
+
+.login-link {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.login-link:hover {
+  color: var(--primary-green);
+  text-decoration: underline;
+}
+
+.error-message {
+  color: var(--error);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: none;
+}
+
+/* para que el autorellenado del navegador no cambie el color del campo*/
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  background-color: var(--black-dark) !important;
+  color: var(--white-green) !important;
+  -webkit-text-fill-color: var(--white-green) !important;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px var(--black-dark) inset !important;
+}

@@ -10,34 +10,55 @@ class UsuarioController {
         return Usuario::getUserByName($nombre_usuario);
     }
 
+    public function getUserByEmail($email) {
+        return Usuario::getUserByEmail($email);
+    }
+    
+    public function getUserById($id_usuario) {
+        try {
+            $conn = getDBConnection();
+            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
+            $sentencia->bindParam(1, $id_usuario);
+            $sentencia->execute();
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
+
+            if ($result) {
+                $usuario = new Usuario();
+                $usuario->setIdUsuario($result['id_usuario']);
+                $usuario->setNombreUsuario($result['nombre_usuario']);
+                $usuario->setEmail($result['email']);
+                $usuario->setContraseña($result['contraseña']); 
+                return $usuario;
+            }
+
+            return null;
+        } catch (PDOException $e) {
+            echo "Error al obtener el usuario por ID: " . $e->getMessage();
+            return null;
+        }
+    }
+
     public function getAllUsers() {
         return Usuario::getAllUsers();
     }
 
-    // Crear un nuevo usuario
     public function crearUsuario($nombre_usuario, $email, $contraseña) {
-        // Verificar si el nombre de usuario ya existe
         if (Usuario::nombreUsuarioExistente($nombre_usuario)) {
-            echo "<p>El nombre de usuario ya está en uso.</p>";
-            return;
+            return "El nombre de usuario ya está en uso.";
         }
-    
-        // Verificar si el email ya está registrado
+
         if (Usuario::emailExistente($email)) {
-            echo "<p>El correo ya está registrado.</p>";
-            return;
+            return "El correo electrónico ya está registrado.";
         }
-    
-        // Crear una instancia de Usuario
+
         $nuevoUsuario = new Usuario();
         $nuevoUsuario->setNombreUsuario($nombre_usuario);
         $nuevoUsuario->setEmail($email);
 
-        // Hashear la contraseña aquí (¡NO antes!)
         $nuevoUsuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
 
-        // Guardar el usuario en la base de datos
         $nuevoUsuario->create();
+        return null; 
     }
 }
 
