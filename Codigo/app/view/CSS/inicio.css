@@ -1,6 +1,6 @@
 body {
     background-color: var(--black-dark);
-    color: var(--white-green);
+    color: var(--white);
     font-family: var(--font-main);
     line-height: 1.6;
     overflow-x: hidden;

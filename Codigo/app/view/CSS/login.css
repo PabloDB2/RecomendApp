@@ -1,7 +1,7 @@
 body {
     background-color: var(--black);
-    color: var(--white-green);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--white);
+    font-family: var(--font-main);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,58 +27,64 @@ padding: 8px;
 }
 .form-label {
     font-weight: 500;
-    color: var(--white-green);
+    color: var(--white);
 }
 
 .form-control {
     border: 1px solid var(--orange);
     padding: 15px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-sm); /* Usa variable global */
     background-color: var(--black-dark);
-    color: var(--white-green);
+    color: var(--white);
     margin-bottom: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    transition: border-color var(--transition-normal), box-shadow var(--transition-normal), transform var(--transition-fast);
+    box-shadow: var(--shadow-sm); /* Usa variable global */
 }
 
 .form-control::placeholder {
-    color: var(--white-green);
+    color: var(--white);
     opacity: 0.7;
 }
 
 .form-control:focus {
     background-color: var(--black-dark);
-    color: white;
+    color: var(--white);
     border-color: var(--primary-green);
     box-shadow: 0 0 0 0.25rem rgba(46, 139, 87, 0.25);
     transform: scale(1.02);
+    outline: none;
 }
 
 .btn-signup {
     background-color: var(--primary-green);
-    color: white;
+    color: var(--white);
     padding: 0.75rem;
     font-weight: 500;
     border: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    cursor: pointer; /* Para que el botón tenga cursor puntero */
 }
 
 .btn-signup:hover {
     background-color: var(--dark-green);
+    box-shadow: var(--shadow-lg);
 }
 
 .login-link {
     color: var(--orange);
     text-decoration: none;
     font-weight: 500;
+    transition: color var(--transition-normal);
 }
 
 .login-link:hover {
     color: var(--primary-green);
+    text-decoration: underline; /* Mejor feedback visual */
 }
 
-.text-danger{
+.text-danger {
     text-align: center;
+    color: var(--error);
 }

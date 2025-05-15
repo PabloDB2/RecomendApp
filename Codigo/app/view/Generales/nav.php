@@ -1,26 +1,41 @@
 <?php
+
 $nombre_usuario = $_SESSION['nombre_usuario'] ?? null;
 $current_page = basename($_SERVER['PHP_SELF']);
+require_once(__DIR__ . '/../../../rutas.php');
+require_once(CONFIG . 'sesion.php'); 
+$redirect = urlencode($_SERVER['REQUEST_URI']); // guarda la url actual para redirigir al cerrar sesion
 
-// Verificar si el usuario quiere cerrar sesión
+$avatar = 'default-avatar.jpg';
+
+if ($nombre_usuario) {
+    require_once(CONTROLLER . 'UsuarioController.php');
+
+    $usuarioController = new UsuarioController();
+    $usuario = $usuarioController->getUserByName($nombre_usuario);
+
+    if ($usuario && !empty($usuario->getAvatar())) {
+        $avatar = $usuario->getAvatar();
+    }
+}
+// Cerrar sesión
 if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
-    $redirect_url = $_GET['redirect'] ?? 'inicio.php';
-    session_unset();  // Eliminar todas las variables de sesión
-    session_destroy(); // Destruir la sesión
+    $redirect_url = $_GET['redirect'] ?? 'inicio.php'; //para redirigir a la pagina desde la que se cerro sesión( o por defecto a inicio)
+    session_destroy();
     header("Location: " . $redirect_url);
     exit();
 }
 ?>
-
-<link rel="stylesheet" href="../CSS/navbar.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="../Generales/variables.css">
+<link rel="stylesheet" href="../CSS/nav.css">
+<!-- Font Awesome para los iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="inicio.php">
+        <a class="navbar-brand" href="inicio.php"> 
             <span class="brand-text">RecomendApp</span>
         </a>
-
         <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarNav" aria-controls="navbarNav"
             aria-expanded="false" aria-label="Toggle navigation">
@@ -31,67 +46,66 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'inicio.php') ? 'active' : ''; ?>" href="inicio.php">
+                        <i class="fas fa-home nav-icon"></i>
                         <span>Inicio</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'peliculas.php') ? 'active' : ''; ?>" href="peliculas.php">
+                        <i class="fas fa-film nav-icon"></i>
                         <span>Películas</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'series.php') ? 'active' : ''; ?>" href="series.php">
+                        <i class="fas fa-tv nav-icon"></i>
                         <span>Series</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo ($current_page == 'libros.php') ? 'active' : ''; ?>" href="libros.php">
+                        <i class="fas fa-book nav-icon"></i>
                         <span>Libros</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'recetas.php') ? 'active' : ''; ?>" href="recetas.php">
-                        <span>Recetas</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'canciones.php') ? 'active' : ''; ?>" href="canciones.php">
-                        <span>Canciones</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo ($current_page == 'artistas.php') ? 'active' : ''; ?>" href="artistas.php">
-                        <span>Artistas</span>
                     </a>
                 </li>
             </ul>
 
-            <div class="navbar-account ms-lg-auto">
+           <div class="navbar-account ms-lg-auto">
                 <?php if ($nombre_usuario): ?>
-                    <?php $redirect = urlencode($_SERVER['REQUEST_URI']); ?>
-                    <div class="dropdown">
-                        <a href="#" class="dropdown-toggle user-menu" id="userDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                            </svg>
-                            <span class="ms-2"><?php echo htmlspecialchars($nombre_usuario); ?></span>
+                    <div class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle user-menu" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div class="avatarNav">
+                                <img src="../Images/avatars/<?php echo htmlspecialchars($avatar); ?>" alt="Avatar" class="user-avatar">
+                            </div>
+                            <span class="user-name"><?php echo htmlspecialchars($nombre_usuario); ?></span>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="cuenta.php">Mi Perfil</a></li>
-                            <li><a class="dropdown-item" href="favoritos.php">Mis Favoritos</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userDropdown">
+                            
+                            <li>
+                                <a class="dropdown-item" href="perfil.php">
+                                    <i class="fas fa-user dropdown-item-icon"></i>
+                                    <span>Mi Perfil</span>
+                                </a>
+                            </li>
+                           
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="?logout=true&redirect=<?php echo $redirect; ?>">Cerrar Sesión</a></li>
+                            <li>
+                                <a class="dropdown-item logout-item" href="?logout=true&redirect=<?php echo $redirect; ?>">
+                                    <i class="fas fa-sign-out-alt dropdown-item-icon"></i>
+                                    <span>Cerrar Sesión</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 <?php else: ?>
-                    <?php $redirect = urlencode($_SERVER['REQUEST_URI']); ?>
-                    <a class="nav-link d-inline px-2 <?php echo ($current_page == 'login.php') ? 'active' : ''; ?>" href="login.php?redirect=<?php echo $redirect; ?>">
-                        <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+                    <a class="botonAutenticarse login-btn <?php echo ($current_page == 'login.php') ? 'active' : ''; ?>" href="login.php?redirect=<?php echo $redirect; ?>">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Iniciar Sesión</span>
                     </a>
-                    <a class="nav-link d-inline px-2 <?php echo ($current_page == 'registro.php') ? 'active' : ''; ?>" href="registro.php">
-                        <i class="fas fa-user-plus me-1"></i> Registrarse
+                    <a class="botonAutenticarse register-btn <?php echo ($current_page == 'registro.php') ? 'active' : ''; ?>" href="registro.php">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Registrarse</span>
                     </a>
                 <?php endif; ?>
             </div>
