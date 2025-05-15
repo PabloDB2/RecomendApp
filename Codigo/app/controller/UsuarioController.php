@@ -1,55 +1,33 @@
 <?php
 
 require_once(__DIR__ . '/../../rutas.php');
-require_once(CONFIG . 'dbConnection.php'); 
+require_once(CONFIG . 'dbConnection.php');
 require_once(MODEL . 'Usuario.php');
 
-class UsuarioController {
-    
-    public function getUserByName($nombre_usuario) {
+class UsuarioController
+{
+    public function getUserByName($nombre_usuario)
+    {
         return Usuario::getUserByName($nombre_usuario);
     }
 
-    public function getUserByEmail($email) {
+    public function getUserByEmail($email)
+    {
         return Usuario::getUserByEmail($email);
     }
-    
-    public function getUserById($id_usuario) {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
-            $sentencia->bindParam(1, $id_usuario);
-            $sentencia->execute();
-            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                $usuario = new Usuario();
-                $usuario->setIdUsuario($result['id_usuario']);
-                $usuario->setNombreUsuario($result['nombre_usuario']);
-                $usuario->setEmail($result['email']);
-                $usuario->setContraseña($result['contraseña']); 
-                return $usuario;
-            }
-
-            return null;
-        } catch (PDOException $e) {
-            echo "Error al obtener el usuario por ID: " . $e->getMessage();
-            return null;
-        }
+    public function getUserById($id_usuario)
+    {
+        return Usuario::getUserById($id_usuario);
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         return Usuario::getAllUsers();
     }
 
-    public function crearUsuario($nombre_usuario, $email, $contraseña) {
-        if (Usuario::nombreUsuarioExistente($nombre_usuario)) {
-            return "El nombre de usuario ya está en uso.";
-        }
-
-        if (Usuario::emailExistente($email)) {
-            return "El correo electrónico ya está registrado.";
-        }
+    public function crearUsuario($nombre_usuario, $email, $contraseña)
+    {
 
         $nuevoUsuario = new Usuario();
         $nuevoUsuario->setNombreUsuario($nombre_usuario);
@@ -58,8 +36,52 @@ class UsuarioController {
         $nuevoUsuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
 
         $nuevoUsuario->create();
-        return null; 
+        return null;
+    }
+
+    public function actualizarUsuario($id_usuario, $nombre_usuario, $email, $contraseña = null)
+    {
+        $usuario = Usuario::getUserById($id_usuario);
+        if (!$usuario) {
+            return "Usuario no encontrado.";
+        }
+
+        if ($usuario->getNombreUsuario() != $nombre_usuario && Usuario::nombreUsuarioExistente($nombre_usuario)) {
+            return "El nombre de usuario ya está en uso.";
+        }
+
+        if ($usuario->getEmail() != $email && Usuario::emailExistente($email)) {
+            return "El email ya está registrado.";
+        }
+
+        $usuario->setNombreUsuario($nombre_usuario);
+        $usuario->setEmail($email);
+
+        if ($contraseña !== null) {
+            $usuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
+        }
+    }
+
+    public function eliminarUsuario($id_usuario)
+    {
+        $usuario = Usuario::getUserById($id_usuario);
+        if (!$usuario) {
+            return "Usuario no encontrado.";
+        }
+    }
+    public function updateAvatar($nombre_usuario, $avatar)
+    {
+        try {
+            $usuario = $this->getUserByName($nombre_usuario);
+
+            if (!$usuario) {
+                return false;
+            }
+
+            $usuario->setAvatar($avatar);
+            return $usuario->update();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
-
-?>

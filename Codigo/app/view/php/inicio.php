@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once(__DIR__ . '/../../../rutas.php');
+require_once(CONFIG . 'sesion.php'); 
 $nombre_usuario = $_SESSION['nombre_usuario'] ?? null;
 include '../Generales/nav.php';
 ?>

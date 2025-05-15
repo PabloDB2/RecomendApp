@@ -2,8 +2,8 @@
 require_once(__DIR__ . '/../../../rutas.php');
 require_once(CONTROLLER . 'UsuarioController.php');
 require_once(MODEL . 'Usuario.php');
+require_once(CONFIG . 'sesion.php'); 
 
-session_start();
 
 if (isset($_GET['redirect'])) {
   $_SESSION['redirect_after_login'] = $_GET['redirect'];
@@ -86,4 +86,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
   </div>
 </body>
+
 </html>

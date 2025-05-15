@@ -2,6 +2,7 @@
 require_once(__DIR__ . '/../../../rutas.php');
 require_once(CONTROLLER . 'UsuarioController.php');
 
+// Comprobar en tiempo real si ya existe el email o nombre de usuario al registrarse
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuarioController = new UsuarioController();
     $response = ['exists' => false];

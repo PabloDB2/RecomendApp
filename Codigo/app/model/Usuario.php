@@ -10,6 +10,8 @@ class Usuario
 
     private $id_usuario;
 
+    private $avatar;
+
     public function getIdUsuario()
     {
         return $this->id_usuario;
@@ -35,6 +37,15 @@ class Usuario
         return $this->contraseña;
     }
 
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
     public function setNombreUsuario($nombre_usuario)
     {
         $this->nombre_usuario = $nombre_usuario;
@@ -49,6 +60,8 @@ class Usuario
     {
         $this->contraseña = $contraseña;
     }
+
+
 
     public function create()
     {
@@ -76,10 +89,11 @@ class Usuario
             if ($result) {
                 $usuario = new Usuario();
                 $usuario->setIdUsuario($result['id_usuario']);
-
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
+                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+
                 return $usuario;
             }
 
@@ -89,15 +103,14 @@ class Usuario
             return null;
         }
     }
-
     public static function getUserByEmail($email)
     {
         try {
             $conn = getDBConnection();
-            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
-            $stmt->bindParam(1, $email);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+            $sentencia->bindParam(1, $email);
+            $sentencia->execute();
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
 
             if ($result) {
 
@@ -107,6 +120,8 @@ class Usuario
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
+                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+
                 return $usuario;
             }
 
@@ -121,10 +136,10 @@ class Usuario
     {
         try {
             $conn = getDBConnection();
-            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
-            $stmt->bindParam(1, $email);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+            $sentencia->bindParam(1, $email);
+            $sentencia->execute();
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
 
             return $result ? true : false;
         } catch (PDOException $e) {
@@ -137,10 +152,10 @@ class Usuario
     {
         try {
             $conn = getDBConnection();
-            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE nombre_usuario = ?");
-            $stmt->bindParam(1, $nombre_usuario);
-            $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE nombre_usuario = ?");
+            $sentencia->bindParam(1, $nombre_usuario);
+            $sentencia->execute();
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
 
             return $result ? true : false;
         } catch (PDOException $e) {
@@ -148,7 +163,32 @@ class Usuario
             return false;
         }
     }
+    public static function getUserById($id_usuario)
+    {
+        try {
+            $conn = getDBConnection();
+            $sentencia = $conn->prepare("SELECT * FROM usuarios WHERE id_usuario = ?");
+            $sentencia->bindParam(1, $id_usuario);
+            $sentencia->execute();
+            $result = $sentencia->fetch(PDO::FETCH_ASSOC);
 
+            if ($result) {
+                $usuario = new Usuario();
+                $usuario->setIdUsuario($result['id_usuario']);
+                $usuario->setNombreUsuario($result['nombre_usuario']);
+                $usuario->setEmail($result['email']);
+                $usuario->setContraseña($result['contraseña']);
+                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+
+                return $usuario;
+            }
+
+            return null;
+        } catch (PDOException $e) {
+            echo "Error al obtener el usuario por ID: " . $e->getMessage();
+            return null;
+        }
+    }
     public static function getAllUsers()
     {
         try {
@@ -159,6 +199,36 @@ class Usuario
         } catch (PDOException $e) {
             echo "Error al ejecutar la query" . $e->getMessage();
             return [];
+        }
+    }
+
+    public function update()
+    {
+        try {
+            $conn = getDBConnection();
+            $sentencia = $conn->prepare("UPDATE usuarios SET nombre_usuario = ?, email = ?, contraseña = ?, avatar = ? WHERE id_usuario = ?");
+            $sentencia->bindParam(1, $this->nombre_usuario);
+            $sentencia->bindParam(2, $this->email);
+            $sentencia->bindParam(3, $this->contraseña);
+            $sentencia->bindParam(4, $this->avatar);
+            $sentencia->bindParam(5, $this->id_usuario);
+            return $sentencia->execute();
+        } catch (PDOException $e) {
+            echo "Error al actualizar el usuario: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function delete()
+    {
+        try {
+            $conn = getDBConnection();
+            $sentencia = $conn->prepare("DELETE FROM usuarios WHERE id_usuario = ?");
+            $sentencia->bindParam(1, $this->id_usuario);
+            return $sentencia->execute();
+        } catch (PDOException $e) {
+            echo "Error al eliminar el usuario: " . $e->getMessage();
+            return false;
         }
     }
 }

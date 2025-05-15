@@ -2,7 +2,7 @@
 require_once(__DIR__ . '/../../../rutas.php');
 require_once(CONTROLLER . 'UsuarioController.php');
 require_once(MODEL . 'Usuario.php');
-session_start();
+require_once(CONFIG . 'sesion.php'); 
 
 $usuarioController = new UsuarioController();
 
@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         formData.append('username', username);
 
         // Realizar la petición AJAX
-        fetch('check_credenciales.php', {
+        fetch('../ajax/check_credenciales.php', {
             method: 'POST',
             body: formData
           })
@@ -251,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         formData.append('email', email);
 
         // Realizar la petición AJAX
-        fetch('check_credenciales.php', {
+        fetch('../ajax/check_credenciales.php', {
             method: 'POST',
             body: formData
           })
