@@ -1,6 +1,6 @@
 body {
   background-color: var(--black);
-  color: var(--white-green);
+  color: var(--white);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
@@ -26,7 +26,7 @@ h2 {
 }
 
 .textoPrincipal {
-  color: var(--white-green);
+  color: var(--white);
   text-align: center;
   margin-bottom: 1.5rem;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
@@ -34,7 +34,7 @@ h2 {
 
 .form-label {
   font-weight: 500;
-  color: var(--white-green);
+  color: var(--white);
   margin-bottom: 0.5rem;
 }
 
@@ -43,7 +43,7 @@ h2 {
   padding: 0.75rem;
   border-radius: 5px;
   background-color: var(--black-dark);
-  color: var(--white-green);
+  color: var(--white);
   margin-bottom: 1rem;
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -109,8 +109,8 @@ h2 {
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   background-color: var(--black-dark) !important;
-  color: var(--white-green) !important;
-  -webkit-text-fill-color: var(--white-green) !important;
+  color: var(--white) !important;
+  -webkit-text-fill-color: var(--white) !important;
   transition: background-color 5000s ease-in-out 0s;
   box-shadow: 0 0 0px 1000px var(--black-dark) inset !important;
 }

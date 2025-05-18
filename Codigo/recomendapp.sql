@@ -67,14 +67,17 @@ CREATE TABLE `lista` (
 -- --------------------------------------------------------
 
 CREATE TABLE `reseñas` (
-  `id_reseña` int(11) NOT NULL AUTO_INCREMENT,
+ `id_reseña` int(11) NOT NULL AUTO_INCREMENT,
   `id_usuario` int(11) NOT NULL,
   `api_id` varchar(255) NOT NULL,
   `categoria` enum('película','serie','libro') NOT NULL,
-  `comentario` text DEFAULT NULL,
-  `puntuacion` int(1) NOT NULL,
+  `texto` text DEFAULT NULL,
+  `puntuacion` INT NOT NULL CHECK (puntuacion BETWEEN 1 AND 5),
+  `likes` int(11) NOT NULL DEFAULT 0,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_reseña`),
-  KEY `id_usuario` (`id_usuario`)
+  KEY `id_usuario` (`id_usuario`),
+  KEY `api_id` (`api_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -89,6 +92,18 @@ CREATE TABLE `visualizaciones` (
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_visualizacion`),
   KEY `id_usuario` (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+-- Tabla para registrar likes únicos por usuario y reseña
+CREATE TABLE IF NOT EXISTS `likes_resena` (
+  `id_like` int(11) NOT NULL AUTO_INCREMENT,
+  `id_usuario` int(11) NOT NULL,
+  `id_resena` int(11) NOT NULL,
+  PRIMARY KEY (`id_like`),
+  UNIQUE KEY `usuario_resena_unique` (`id_usuario`, `id_resena`),
+  KEY `id_usuario` (`id_usuario`),
+  KEY `id_resena` (`id_resena`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

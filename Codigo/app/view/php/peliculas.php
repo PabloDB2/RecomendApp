@@ -697,7 +697,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
 
         function attachDynamicEvents() {
             document.querySelectorAll('.btn-details').forEach(btn => {
-                btn.onclick = () => window.location.href = `movie-details.php?id=${btn.closest('[data-id]').getAttribute('data-id')}`;
+                btn.onclick = () => window.location.href = `pelicula_detalle.php?id=${btn.closest('[data-id]').getAttribute('data-id')}`;
             });
 
             document.querySelectorAll('.btn-guardar').forEach(btn => {
