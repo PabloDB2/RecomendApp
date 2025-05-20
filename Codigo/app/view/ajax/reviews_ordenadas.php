@@ -52,7 +52,7 @@ if ($sort === 'antiguas') {
 function renderReview($r, $id_usuario, $nombre_usuario)
 {
     ob_start();
-    $textoConSaltos = nl2br($r['texto']);
+    $textoSeguro = htmlspecialchars(ltrim($r['texto'], "\r\n"));
 ?>
     <div class="review-item mb-4">
         <div class="d-flex">
@@ -80,7 +80,7 @@ function renderReview($r, $id_usuario, $nombre_usuario)
                         <?php endif; ?>
                     </div>
                 </div>
-                <p class="review-text" style="white-space: normal;"><?= $textoConSaltos ?></p>
+                <p class="review-text" style="overflow-wrap: break-word; word-break: break-word; white-space: pre-line; width: 100%; max-width: 100%; display: block; box-sizing: border-box; margin-bottom: 10px;"><?= $textoSeguro ?></p>
                 <small class="fechaReseña"><?= date('d/m/Y H:i', strtotime($r['fecha'])) ?></small>
             </div>
         </div>
@@ -91,6 +91,7 @@ function renderReview($r, $id_usuario, $nombre_usuario)
 
 $htmlParts = [];
 foreach ($resenas as $resena) {
+    if ($nombre_usuario && $resena['id_usuario'] == $id_usuario) continue;
     $htmlParts[] = renderReview($resena, $id_usuario, $nombre_usuario);
 }
 

@@ -16,13 +16,10 @@ if (isset($_SESSION['nombre_usuario'])) {
         $listaController = new ListaController();
     }
 }
-
-// GET
 $region = $_GET['region'] ?? 'ES';
 $genero = $_GET['genero'] ?? '';
 $anio = $_GET['anio'] ?? '';
 $pais = $_GET['pais'] ?? '';
-$duracion = $_GET['duracion'] ?? '';
 $proveedor = $_GET['proveedor'] ?? '';
 $productora = $_GET['productora'] ?? '';
 $orden = $_GET['orden'] ?? '';
@@ -31,25 +28,16 @@ $busqueda = $_GET['busqueda'] ?? '';
 $rating_min = $_GET['rating_min'] ?? '0';
 $rating_max = $_GET['rating_max'] ?? '10';
 $certificacion = $_GET['certificacion'] ?? '';
-
-// Certificaciones por región
-$certificaciones = [ 'G' => 'Todas las edades', 'PG' => '+7', 'PG-13' => '+12', 'R' => '+16', 'NC-17' => '+18' ];
+$certificaciones = [ 'TV-Y' => 'Todas las edades', 'TV-Y7' => '+7', 'TV-G' => 'Público general', 'TV-PG' => 'Guía parental', 'TV-14' => '+14', 'TV-MA' => '+18' ];
 
 $paises = [ 'ES' => 'España', 'US' => 'Estados Unidos', 'FR' => 'Francia', 'DE' => 'Alemania', 'IT' => 'Italia',
             'JP' => 'Japón', 'CN' => 'China', 'RU' => 'Rusia', 'SE' => 'Suecia', 'PL' => 'Polonia',
             'IR' => 'Irán', 'KR' => 'Corea del Sur', 'MX' => 'México', 'AR' => 'Argentina', 'IN' => 'India', 'RS' => 'Serbia' ];
-
-$genero_map = [ 'accion' => 28, 'aventura' => 12, 'animacion' => 16, 'comedia' => 35, 'criminal' => 80,
-                'documental' => 99, 'drama' => 18, 'familia' => 10751, 'fantasia' => 14, 'historia' => 36,
-                'terror' => 27, 'musica' => 10402, 'misterio' => 9648, 'romance' => 10749, 'ciencia-ficcion' => 878,
-                'tv-movie' => 10770, 'thriller' => 53, 'guerra' => 10752, 'western' => 37 ];
-
-                $duracion_map = [ '<60' => "with_runtime.lte=60", '60-90' => "with_runtime.gte=60&with_runtime.lte=90",
-                  '90-120' => "with_runtime.gte=90&with_runtime.lte=120", '120-180' => "with_runtime.gte=120&with_runtime.lte=180",
-                  '>180' => "with_runtime.gte=180" ];
-
-// Obtener proveedores (segun la region)
-$providers_url = "https://api.themoviedb.org/3/watch/providers/movie?api_key=$api_key&language=es-ES&watch_region=$region";
+$genero_map = [ 'accion-aventura' => 10759, 'animacion' => 16, 'comedia' => 35, 'crimen' => 80,
+                'documental' => 99, 'drama' => 18, 'familia' => 10751, 'infantil' => 10762, 'misterio' => 9648, 
+                'noticias' => 10763, 'reality' => 10764, 'sci-fi-fantasia' => 10765, 'soap' => 10766, 
+                'talk' => 10767, 'guerra-politica' => 10768, 'western' => 37 ];
+$providers_url = "https://api.themoviedb.org/3/watch/providers/tv?api_key=$api_key&language=es-ES&watch_region=$region";
 $providers_response = @file_get_contents($providers_url);
 $providers_data = $providers_response ? json_decode($providers_response, true) : [];
 $region_providers = [];
@@ -66,19 +54,16 @@ if ($genero && isset($genero_map[$genero])) {
     $filters[] = "with_genres=" . $genero_map[$genero];
 }
 if ($anio) {
-    $filters[] = "primary_release_year=$anio";
+    $filters[] = "first_air_date_year=$anio";
 }
 if ($pais && isset($paises[$pais])) {
     $filters[] = "with_origin_country=$pais";
-}
-if ($duracion && isset($duracion_map[$duracion])) {
-    $filters[] = $duracion_map[$duracion];
 }
 if ($proveedor) {
     $filters[] = "with_watch_providers=$proveedor&watch_region=$region";
 }
 if ($productora) {
-    $filters[] = "with_companies=$productora";
+    $filters[] = "with_networks=$productora";
 }
 if ($rating_min !== '0' || $rating_max !== '10') {
     $filters[] = "vote_average.gte=$rating_min&vote_average.lte=$rating_max";
@@ -94,30 +79,26 @@ if ($orden) {
         $filters[] = "vote_count.gte=100";
     }
 
-    if ($orden === 'release_date.desc') {
+    if ($orden === 'first_air_date.desc') {
         $fecha_limite = $busqueda ? date('Y-m-d', strtotime('+3 month')) : date('Y-m-d');
-        $filters[] = "release_date.lte=$fecha_limite";
+        $filters[] = "first_air_date.lte=$fecha_limite";
     }
 }
-
-// construcción de URL 
 if ($busqueda) {
-    $base_url = "https://api.themoviedb.org/3/search/movie?api_key=$api_key&language=es-ES&query=" . urlencode($busqueda) . "&page=$pagina";
+    $base_url = "https://api.themoviedb.org/3/search/tv?api_key=$api_key&language=es-ES&query=" . urlencode($busqueda) . "&page=$pagina";
 } else {
-    $base_url = "https://api.themoviedb.org/3/discover/movie?api_key=$api_key&language=es-ES&page=$pagina";
+    $base_url = "https://api.themoviedb.org/3/discover/tv?api_key=$api_key&language=es-ES&page=$pagina";
 }
 
 $final_url = $base_url . (count($filters) ? '&' . implode('&', $filters) : '');
 $response = file_get_contents($final_url);
 $data = json_decode($response, true);
 
-$peliculas = $data['results'] ?? [];
+$series = $data['results'] ?? [];
 $total_pages = $data['total_pages'] ?? 1;
 $total_results = $data['total_results'] ?? 0;
 
-
-// Contar filtros activos
-$active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveedor, $productora]));
+$active_filters = count(array_filter([$genero, $anio, $pais, $proveedor, $productora]));
 ?>
 
 <!DOCTYPE html>
@@ -125,42 +106,40 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
 
 <head>
     <meta charset="UTF-8">
-    <title>Películas</title>
+    <title>Series</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explora y filtra películas por género, año, duración y más">
+    <meta name="description" content="Explora y filtra series por género, año, temporadas y más">
 
-    <!-- pendiente cambiar el favicon con mi logo -->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/peliculas.css">
-    <!-- precargar las imagenes importantes de la base de datos -->
+    <link rel="stylesheet" href="../CSS/series.css">
     <link rel="preconnect" href="https://image.tmdb.org">
 </head>
 
 <body>
     <main>
-        <!-- Hero Section (es la seccion destacada en la parte superior de una web-->
-        <section class="hero-section">
+        <section class="hero-section-series">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
-                        <h1 class="hero-title">Catálogo de películas</h1>
-                        <p class="hero-subtitle">Encuentra la película que buscas según tus preferencias</p>
+                        <h1 class="hero-title">Catálogo de series</h1>
+                        <p class="hero-subtitle">Encuentra la serie que buscas según tus preferencias</p>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block">
                         <div class="hero-image-container">
                             <div class="hero-image-grid">
                                 <?php
-                                $popular_movies = array_slice($peliculas, 0, 4);
-                                foreach ($popular_movies as $index => $movie):
-                                    if (!empty($movie['backdrop_path'])):
+                                $popular_series = array_slice($series, 0, 4);
+                                foreach ($popular_series as $index => $serie):
+                                    if (!empty($serie['backdrop_path'])):
                                 ?>
                                         <div class="hero-image-item hero-image-<?= $index + 1 ?> movie-container">
-                                            <img src="https://image.tmdb.org/t/p/w780<?= $movie['backdrop_path'] ?>"
-                                                alt="<?= htmlspecialchars($movie['title']) ?>"
+                                            <img src="https://image.tmdb.org/t/p/w780<?= $serie['backdrop_path'] ?>"
+                                                alt="<?= htmlspecialchars($serie['name']) ?>"
                                                 class="movie-img hero-backdrop">
-                                            <div class="movie-title"><?= htmlspecialchars($movie['title']) ?></div>
+                                            <div class="movie-title"><?= htmlspecialchars($serie['name']) ?></div>
                                         </div>
                                 <?php
                                     endif;
@@ -194,7 +173,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                             <div class="filters-row">
                                 <div class="filter-item">
                                     <label class="form-label">
-                                        <i class="fas fa-calendar-alt me-1"></i>Año de estreno
+                                        <i class="fas fa-calendar-alt me-1"></i>Año
                                     </label>
                                     <select class="form-select custom-select" name="anio">
                                         <option value="">Cualquiera</option>
@@ -222,21 +201,6 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     </select>
                                 </div>
 
-                                <!-- Filtro Duración -->
-                                <div class="filter-item">
-                                    <label class="form-label">
-                                        <i class="fas fa-clock me-1"></i>Duración
-                                    </label>
-                                    <select class="form-select custom-select" name="duracion">
-                                        <option value="">Cualquiera</option>
-                                        <option value="<60" <?= ($duracion == '<60') ? 'selected' : '' ?>>Menos de 60 min</option>
-                                        <option value="60-90" <?= ($duracion == '60-90') ? 'selected' : '' ?>>60 a 90 min</option>
-                                        <option value="90-120" <?= ($duracion == '90-120') ? 'selected' : '' ?>>90 a 120 min</option>
-                                        <option value="120-180" <?= ($duracion == '120-180') ? 'selected' : '' ?>>120 a 180 min</option>
-                                        <option value=">180" <?= ($duracion == '>180') ? 'selected' : '' ?>>Más de 180 min</option>
-                                    </select>
-                                </div>
-
                                 <!-- Filtro Valoración -->
                                 <div class="filter-item">
                                     <label class="form-label">
@@ -259,7 +223,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                 <!-- Filtro Certificación -->
                                 <div class="filter-item">
                                     <label class="form-label">
-                                        <i class="fas fa-certificate me-1"></i>Clasificación por edad
+                                        <i class="fas fa-certificate me-1"></i>Clasificación
                                     </label>
                                     <select class="form-select custom-select" name="certificacion">
                                         <option value="">Cualquiera</option>
@@ -271,40 +235,37 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     </select>
                                 </div>
 
-                                <!-- Filtro Productora -->
+                                <!-- Filtro Network -->
                                 <div class="filter-item">
                                     <label class="form-label">
-                                        <i class="fas fa-building me-1"></i>Productora
+                                        <i class="fas fa-building me-1"></i>Network
                                     </label>
                                     <select class="form-select custom-select" name="productora">
                                         <option value="">Cualquiera</option>
-                                        <option value="1" <?= (isset($_GET['productora']) && $_GET['productora'] == '1') ? 'selected' : '' ?>>Lucasfilm</option>
-                                        <option value="420" <?= (isset($_GET['productora']) && $_GET['productora'] == '420') ? 'selected' : '' ?>>Marvel Studios</option>
-                                        <option value="2" <?= (isset($_GET['productora']) && $_GET['productora'] == '2') ? 'selected' : '' ?>>Walt Disney</option>
-                                        <option value="174" <?= (isset($_GET['productora']) && $_GET['productora'] == '174') ? 'selected' : '' ?>>Warner Bros.</option>
-                                        <option value="33" <?= (isset($_GET['productora']) && $_GET['productora'] == '33') ? 'selected' : '' ?>>Universal Pictures</option>
-                                        <option value="4" <?= (isset($_GET['productora']) && $_GET['productora'] == '4') ? 'selected' : '' ?>>Paramount Pictures</option>
-                                        <option value="5" <?= (isset($_GET['productora']) && $_GET['productora'] == '5') ? 'selected' : '' ?>>Columbia Pictures</option>
-                                        <option value="10342" <?= (isset($_GET['productora']) && $_GET['productora'] == '10342') ? 'selected' : '' ?>>Studio Ghibli</option>
-                                        <option value="3" <?= (isset($_GET['productora']) && $_GET['productora'] == '3') ? 'selected' : '' ?>>Pixar</option>
-                                        <option value="25" <?= (isset($_GET['productora']) && $_GET['productora'] == '25') ? 'selected' : '' ?>>20th Century Studios</option>
-                                        <option value="12" <?= (isset($_GET['productora']) && $_GET['productora'] == '12') ? 'selected' : '' ?>>New Line Cinema</option>
-                                        <option value="21" <?= (isset($_GET['productora']) && $_GET['productora'] == '21') ? 'selected' : '' ?>>MGM</option>
-                                        <option value="9993" <?= (isset($_GET['productora']) && $_GET['productora'] == '9993') ? 'selected' : '' ?>>DC Films</option>
-                                        <option value="1632" <?= (isset($_GET['productora']) && $_GET['productora'] == '1632') ? 'selected' : '' ?>>Lionsgate</option>
-                                        <option value="41077" <?= (isset($_GET['productora']) && $_GET['productora'] == '41077') ? 'selected' : '' ?>>A24</option>
+                                        <option value="3475" <?= (isset($_GET['productora']) && $_GET['productora'] == '3475') ? 'selected' : '' ?>>HBO</option>
                                         <option value="2885" <?= (isset($_GET['productora']) && $_GET['productora'] == '2885') ? 'selected' : '' ?>>Netflix</option>
-                                        <option value="521" <?= (isset($_GET['productora']) && $_GET['productora'] == '521') ? 'selected' : '' ?>>DreamWorks Animation</option>
-                                        <option value="3172" <?= (isset($_GET['productora']) && $_GET['productora'] == '3172') ? 'selected' : '' ?>>Blumhouse Productions</option>
-                                        <option value="513" <?= (isset($_GET['productora']) && $_GET['productora'] == '513') ? 'selected' : '' ?>>Toho</option>
-                                        <option value="6704" <?= (isset($_GET['productora']) && $_GET['productora'] == '6704') ? 'selected' : '' ?>>Illumination Entertainment</option>
+                                        <option value="213" <?= (isset($_GET['productora']) && $_GET['productora'] == '213') ? 'selected' : '' ?>>Sony Pictures Television</option>
+                                        <option value="174" <?= (isset($_GET['productora']) && $_GET['productora'] == '174') ? 'selected' : '' ?>>Warner Bros. Television</option>
+                                        <option value="19" <?= (isset($_GET['productora']) && $_GET['productora'] == '19') ? 'selected' : '' ?>>ABC Studios</option>
+                                        <option value="1" <?= (isset($_GET['productora']) && $_GET['productora'] == '1') ? 'selected' : '' ?>>Lucasfilm</option>
+                                        <option value="420" <?= (isset($_GET['productora']) && $_GET['productora'] == '420') ? 'selected' : '' ?>>Marvel Television</option>
+                                        <option value="2" <?= (isset($_GET['productora']) && $_GET['productora'] == '2') ? 'selected' : '' ?>>Walt Disney Television</option>
+                                        <option value="1024" <?= (isset($_GET['productora']) && $_GET['productora'] == '1024') ? 'selected' : '' ?>>Amazon Studios</option>
+                                        <option value="13" <?= (isset($_GET['productora']) && $_GET['productora'] == '13') ? 'selected' : '' ?>>Paramount Television</option>
+                                        <option value="1438" <?= (isset($_GET['productora']) && $_GET['productora'] == '1438') ? 'selected' : '' ?>>BBC</option>
+                                        <option value="4" <?= (isset($_GET['productora']) && $_GET['productora'] == '4') ? 'selected' : '' ?>>Fox Television</option>
+                                        <option value="49" <?= (isset($_GET['productora']) && $_GET['productora'] == '49') ? 'selected' : '' ?>>MGM Television</option>
+                                        <option value="9993" <?= (isset($_GET['productora']) && $_GET['productora'] == '9993') ? 'selected' : '' ?>>DC Entertainment</option>
+                                        <option value="4330" <?= (isset($_GET['productora']) && $_GET['productora'] == '4330') ? 'selected' : '' ?>>Apple TV+</option>
+                                        <option value="3364" <?= (isset($_GET['productora']) && $_GET['productora'] == '3364') ? 'selected' : '' ?>>AMC</option>
+                                        <option value="43" <?= (isset($_GET['productora']) && $_GET['productora'] == '43') ? 'selected' : '' ?>>National Geographic</option>
                                     </select>
 
                                 </div>
                                 <!-- Filtro País -->
                                 <div class="filter-item">
                                     <label class="form-label">
-                                        <i class="fas fa-globe-americas me-1"></i>País de producción
+                                        <i class="fas fa-globe-americas me-1"></i>País
                                     </label>
                                     <select class="form-select custom-select" name="pais">
                                         <option value="">Cualquiera</option>
@@ -315,7 +276,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                 </div> <!-- Filtro plataforma y región -->
                                 <div class="filter-item platforms-region">
                                     <label class="form-label">
-                                        <i class="fas fa-tv me-1"></i>Plataforma y región
+                                        <i class="fas fa-tv me-1"></i>Plataforma
                                     </label>
                                     <div class="platforms-region-selects">
                                         <select class="form-select custom-select platform-select" name="proveedor">
@@ -338,7 +299,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     <i class="fas fa-check"></i>
                                     <span>Aplicar</span>
                                 </button>
-                                <a href="peliculas.php" class="btn btn-reset">
+                                <a href="series.php" class="btn btn-reset">
                                     <i class="fas fa-undo"></i>
                                     <span>Resetear</span>
                                 </a>
@@ -350,8 +311,6 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
 
             </div>
         </section>
-
-        <!-- Barra de búsqueda y ordenamiento -->
         <section class="search-actions-section">
             <div class="container">
                 <div class="search-actions-container">
@@ -364,7 +323,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                 class="search-input"
                                 name="busqueda"
                                 form="filterForm"
-                                placeholder="Buscar películas..."
+                                placeholder="Buscar series..."
                                 value="<?= htmlspecialchars($busqueda) ?>">
                         </div>
                     </div>
@@ -376,10 +335,11 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                         </label>
                         <select class="sort-select" name="orden" id="orden" form="filterForm">
                             <option value="">Tendencias</option>
-                            <option value="release_date.desc" <?= ($_GET['orden'] ?? '') == 'release_date.desc' ? 'selected' : '' ?>>Más reciente</option>
-                            <option value="release_date.asc" <?= ($_GET['orden'] ?? '') == 'release_date.asc' ? 'selected' : '' ?>>Más antiguo</option>
+                            <option value="first_air_date.desc" <?= ($_GET['orden'] ?? '') == 'first_air_date.desc' ? 'selected' : '' ?>>Más reciente</option>
+                            <option value="first_air_date.asc" <?= ($_GET['orden'] ?? '') == 'first_air_date.asc' ? 'selected' : '' ?>>Más antiguo</option>
                             <option value="vote_average.desc" <?= ($_GET['orden'] ?? '') == 'vote_average.desc' ? 'selected' : '' ?>>Mejor valoradas</option>
                             <option value="vote_count.desc" <?= ($_GET['orden'] ?? '') == 'vote_count.desc' ? 'selected' : '' ?>>Más vistas</option>
+                            <option value="popularity.desc" <?= ($_GET['orden'] ?? '') == 'popularity.desc' ? 'selected' : '' ?>>Más populares</option>
                         </select>
                     </div>
                 </div>
@@ -392,7 +352,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                     <div class="results-count">
                         <h3>
                             <span class="results-number"><?= number_format($total_results, 0, ',', '.') ?></span>
-                            películas encontradas
+                            series encontradas
                         </h3>
                     </div>
                     <div class="view-options">
@@ -404,24 +364,24 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                         </button>
                     </div>
                 </div>
-                <?php if (empty($peliculas)): ?>
+                <?php if (empty($series)): ?>
                     <div class="no-results">
                         <div class="no-results-icon">
                             <i class="fas fa-film-slash"></i>
                         </div>
-                        <h3>No se encontraron películas</h3>
-                        <p>Intenta con otros filtros o <a href="peliculas.php">resetea todos los filtros</a>.</p>
+                        <h3>No se encontraron series</h3>
+                        <p>Intenta con otros filtros o <a href="series.php">resetea todos los filtros</a>.</p>
                     </div>
                 <?php else: ?>
                     <!-- Vista Grid-->
                     <div class="movies-grid" id="moviesGrid">
-                        <?php foreach ($peliculas as $peli): ?>
-                            <div class="movie-card" data-id="<?= $peli['id'] ?>">
+                        <?php foreach ($series as $serie): ?>
+                            <div class="movie-card" data-id="<?= $serie['id'] ?>">
                                 <div class="movie-poster">
-                                    <?php if ($peli['poster_path']): ?>
+                                    <?php if ($serie['poster_path']): ?>
                                         <img
-                                            src="https://image.tmdb.org/t/p/w342<?= $peli['poster_path'] ?>"
-                                            alt="<?= htmlspecialchars($peli['title']) ?>"
+                                            src="https://image.tmdb.org/t/p/w342<?= $serie['poster_path'] ?>"
+                                            alt="<?= htmlspecialchars($serie['name']) ?>"
                                             loading="lazy">
                                     <?php else: ?>
                                         <div class="no-poster">
@@ -432,20 +392,20 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     <div class="movie-rating">
                                         <span class="rating-value">
                                             <i class="fas fa-star"></i>
-                                            <?= number_format($peli['vote_average'], 1) ?>
+                                            <?= number_format($serie['vote_average'], 1) ?>
                                         </span>
                                     </div>
                                     <div class="movie-actions">
                                         <?php
                                         $enLista = false;
                                         if (isset($listaController) && isset($id_usuario)) {
-                                            $enLista = $listaController->estaEnLista($id_usuario, $peli['id'], 'pelicula');
+                                            $enLista = $listaController->estaEnLista($id_usuario, $serie['id'], 'serie');
                                         }
                                         ?>
                                         <button class="btn-action btn-guardar <?= $enLista ? 'active' : '' ?>"
                                             title="Añadir a mi lista"
-                                            data-id="<?= $peli['id'] ?>"
-                                            data-tipo="pelicula">
+                                            data-id="<?= $serie['id'] ?>"
+                                            data-tipo="serie">
                                             <i class="<?= $enLista ? 'fas' : 'far' ?> fa-bookmark"></i>
                                         </button>
                                         <button class="btn-action btn-details" title="Ver detalles">
@@ -455,26 +415,24 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                 </div>
                                 <div class="movie-info">
                                     <div class="movie-meta">
-                                        <?php if (!empty($peli['release_date'])): ?>
-                                            <span class="movie-year"><?= date('Y', strtotime($peli['release_date'])) ?></span>
-                                            <h3 class="movie-title"><?= htmlspecialchars($peli['title']) ?></h3>
+                                        <?php if (!empty($serie['first_air_date'])): ?>
+                                            <span class="movie-year"><?= date('Y', strtotime($serie['first_air_date'])) ?></span>
+                                            <h3 class="movie-title"><?= htmlspecialchars($serie['name']) ?></h3>
                                         <?php endif; ?>
                                     </div>
-
-
                                 </div>
                             </div>
                         <?php endforeach; ?>
                     </div>
                     <!-- Vista lista -->
                     <div class="movies-list" id="moviesList" style="display: none;">
-                        <?php foreach ($peliculas as $peli): ?>
-                            <div class="movie-list-item" data-id="<?= $peli['id'] ?>">
+                        <?php foreach ($series as $serie): ?>
+                            <div class="movie-list-item" data-id="<?= $serie['id'] ?>">
                                 <div class="movie-list-poster">
-                                    <?php if ($peli['poster_path']): ?>
+                                    <?php if ($serie['poster_path']): ?>
                                         <img
-                                            src="https://image.tmdb.org/t/p/w154<?= $peli['poster_path'] ?>"
-                                            alt="<?= htmlspecialchars($peli['title']) ?>"
+                                            src="https://image.tmdb.org/t/p/w154<?= $serie['poster_path'] ?>"
+                                            alt="<?= htmlspecialchars($serie['name']) ?>"
                                             loading="lazy">
                                     <?php else: ?>
                                         <div class="no-poster">
@@ -483,24 +441,24 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     <?php endif; ?>
                                 </div>
                                 <div class="movie-list-info">
-                                    <h3 class="movie-list-title"><?= htmlspecialchars($peli['title']) ?></h3>
+                                    <h3 class="movie-list-title"><?= htmlspecialchars($serie['name']) ?></h3>
                                     <div class="movie-list-meta">
-                                        <?php if (!empty($peli['release_date'])): ?>
+                                        <?php if (!empty($serie['first_air_date'])): ?>
                                             <span class="movie-list-year">
                                                 <i class="fas fa-calendar-alt"></i>
-                                                <?= 'Estreno: ' . date('d/m/Y', strtotime($peli['release_date'])) ?>
+                                                <?= 'Estreno: ' . date('d/m/Y', strtotime($serie['first_air_date'])) ?>
                                             </span>
                                         <?php endif; ?>
                                         <span class="movie-list-rating">
                                             <i class="fas fa-star"></i>
-                                            <?= number_format($peli['vote_average'], 1) ?>
+                                            <?= number_format($serie['vote_average'], 1) ?>
                                         </span>
                                     </div>
                                     <p class="movie-list-overview">
-                                        <?= !empty($peli['overview']) ?
-                                            (strlen($peli['overview']) > 500 ?
-                                                substr(htmlspecialchars($peli['overview']), 0, 200) . '...' :
-                                                htmlspecialchars($peli['overview'])) :
+                                        <?= !empty($serie['overview']) ?
+                                            (strlen($serie['overview']) > 500 ?
+                                                substr(htmlspecialchars($serie['overview']), 0, 200) . '...' :
+                                                htmlspecialchars($serie['overview'])) :
                                             'No hay descripción disponible.' ?>
                                     </p>
                                 </div>
@@ -508,13 +466,13 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                                     <?php
                                     $enLista = false;
                                     if (isset($listaController) && isset($id_usuario)) {
-                                        $enLista = $listaController->estaEnLista($id_usuario, $peli['id'], 'pelicula');
+                                        $enLista = $listaController->estaEnLista($id_usuario, $serie['id'], 'serie');
                                     }
                                     ?>
                                     <button class="btn-action btn-guardar <?= $enLista ? 'active' : '' ?>"
                                         title="Añadir a mi lista"
-                                        data-id="<?= $peli['id'] ?>"
-                                        data-tipo="pelicula">
+                                        data-id="<?= $serie['id'] ?>"
+                                        data-tipo="serie">
                                         <i class="<?= $enLista ? 'fas' : 'far' ?> fa-bookmark"></i>
                                     </button>
                                     <button class="btn-action btn-details" title="Ver detalles">
@@ -528,16 +486,13 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
             </div>
         </section>
     </main>
-    <!-- Volver arriba -->
     <button id="backToTop" class="back-to-top" title="Volver arriba">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    <!-- Indicador de carga (scroll inifnito) -->
     <div id="infiniteLoader" class="loading-indicator" style="display:none;">
         <div class="loading-animation">
             <div class="spinner"></div>
-            <p class="loading-text">Cargando más películas...</p>
+            <p class="loading-text">Cargando más series...</p>
         </div>
     </div>
 
@@ -562,15 +517,11 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                     filter.closest('.filter-item').classList.add('active');
                 });
             };
-
-            // animacion cerrar filtros
             els.toggleFiltersBtn?.addEventListener('click', () => {
                 els.filterBody.classList.toggle('collapsed');
                 const icon = els.toggleFiltersBtn.querySelector('i');
                 icon.classList.toggle('fa-chevron-down');
                 icon.classList.toggle('fa-chevron-up');
-
-                // animacion suave
                 if (!els.filterBody.classList.contains('collapsed')) {
                     els.filterBody.style.height = els.filterBody.scrollHeight + 'px';
                     setTimeout(() => {
@@ -597,8 +548,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
             updateFilterState();
 
             els.regionSelect?.addEventListener('change', () => document.getElementById('filterForm').submit());
-            
-            const ordenSelect = document.getElementById('orden');
+                        const ordenSelect = document.getElementById('orden');
             ordenSelect?.addEventListener('change', () => document.getElementById('filterForm').submit());
 
             els.viewButtons.forEach(btn => btn.addEventListener('click', function() {
@@ -613,7 +563,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
             window.addEventListener('scroll', () => {
                 els.backToTopButton.classList.toggle('show', window.pageYOffset > 300);
                 if (!isLoading && currentPage < totalPages &&
-                    (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 400)) loadMoreMovies();
+                    (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 400)) loadMoreSeries();
             });
 
             els.backToTopButton?.addEventListener('click', () => window.scrollTo({
@@ -627,27 +577,20 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
             const hero = document.querySelector('.hero-image-grid');
             if (hero) {
                 const title = document.createElement('h2');
-                title.textContent = 'Películas destacadas';
+                title.textContent = 'Series destacadas';
                 title.classList.add('popular-title');
                 hero.parentNode.insertBefore(title, hero);
             } 
-            //slider rating
             if (els.ratingRange && els.ratingValue) {
                 const updateSlider = (value) => {
                     els.ratingValue.textContent = value;
-                    // calcular porcentaje para gradient
                     const percentage = (value / els.ratingRange.max) * 100;
                     els.ratingRange.style.setProperty('--rating-percentage', `${percentage}%`);
                 };
-
                 updateSlider(els.ratingRange.value);
-
-                // actalizar mientras se hace slide
                 els.ratingRange.addEventListener('input', (e) => {
                     updateSlider(e.target.value);
                 });
-
-                // actualizar cuando deja de hacer slide
                 els.ratingRange.addEventListener('change', (e) => {
                     updateSlider(e.target.value);
                 });
@@ -670,43 +613,43 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
             <?php endif; ?>
         }
 
-        function appendMovies(movies, view) {
+        function appendSeries(series, view) {
             const grid = document.getElementById('moviesGrid');
             const list = document.getElementById('moviesList');
 
-            movies.forEach(peli => {
-                const year = peli.release_date ? `<span class="movie-${view === 'list' ? 'list-' : ''}year">${new Date(peli.release_date).getFullYear()}</span>` : '';
-                const poster = peli.poster_path ?
-                    `<img loading="lazy" src="https://image.tmdb.org/t/p/${view === 'list' ? 'w154' : 'w342'}${peli.poster_path}" alt="${peli.title.replace(/"/g, '&quot;')}">` :
+            series.forEach(serie => {
+                const year = serie.first_air_date ? `<span class="movie-${view === 'list' ? 'list-' : ''}year">${new Date(serie.first_air_date).getFullYear()}</span>` : '';
+                const poster = serie.poster_path ?
+                    `<img loading="lazy" src="https://image.tmdb.org/t/p/${view === 'list' ? 'w154' : 'w342'}${serie.poster_path}" alt="${serie.name.replace(/"/g, '&quot;')}">` :
                     `<div class="no-poster">${view === 'list' ? '<i class="fas fa-film"></i>' : '<span>Sin imagen</span>'}</div>`;
-                const bookmarkBtn = `<button class="btn-action btn-guardar${peli.enLista ? ' active' : ''}" title="Añadir a mi lista" data-id="${peli.id}" data-tipo="pelicula"><i class="${peli.enLista ? 'fas' : 'far'} fa-bookmark"></i></button>`;
+                const bookmarkBtn = `<button class="btn-action btn-guardar${serie.enLista ? ' active' : ''}" title="Añadir a mi lista" data-id="${serie.id}" data-tipo="serie"><i class="${serie.enLista ? 'fas' : 'far'} fa-bookmark"></i></button>`;
                 const detailsBtn = `<button class="btn-action btn-details" title="Ver detalles"><i class="fas fa-info-circle"></i></button>`;
 
                 if (view !== 'list') {
                     const card = document.createElement('div');
                     card.className = 'movie-card';
-                    card.setAttribute('data-id', peli.id);
-                    card.innerHTML = `<div class="movie-poster">${poster}<div class="movie-rating"><span class="rating-value"><i class="fas fa-star"></i> ${parseFloat(peli.vote_average).toFixed(1)}</span></div><div class="movie-actions">${bookmarkBtn}${detailsBtn}</div></div><div class="movie-info"><div class="movie-meta">${year}<h3 class="movie-title">${peli.title}</h3></div></div>`;
+                    card.setAttribute('data-id', serie.id);
+                    card.innerHTML = `<div class="movie-poster">${poster}<div class="movie-rating"><span class="rating-value"><i class="fas fa-star"></i> ${parseFloat(serie.vote_average).toFixed(1)}</span></div><div class="movie-actions">${bookmarkBtn}${detailsBtn}</div></div><div class="movie-info"><div class="movie-meta">${year}<h3 class="movie-title">${serie.name}</h3></div></div>`;
                     grid.appendChild(card);
                 }
 
                 const listItem = document.createElement('div');
                 listItem.className = 'movie-list-item';
-                listItem.setAttribute('data-id', peli.id);
-                listItem.innerHTML = `<div class="movie-list-poster">${poster}</div><div class="movie-list-info"><h3 class="movie-list-title">${peli.title}</h3><div class="movie-list-meta">${year}<span class="movie-list-rating"><i class="fas fa-star"></i> ${parseFloat(peli.vote_average).toFixed(1)}</span></div><p class="movie-list-overview">${peli.overview ? (peli.overview.length > 200 ? peli.overview.substring(0, 200) + '...' : peli.overview) : 'No hay descripción disponible.'}</p></div><div class="movie-list-actions">${bookmarkBtn}${detailsBtn}</div>`;
+                listItem.setAttribute('data-id', serie.id);
+                listItem.innerHTML = `<div class="movie-list-poster">${poster}</div><div class="movie-list-info"><h3 class="movie-list-title">${serie.name}</h3><div class="movie-list-meta">${year}<span class="movie-list-rating"><i class="fas fa-star"></i> ${parseFloat(serie.vote_average).toFixed(1)}</span></div><p class="movie-list-overview">${serie.overview ? (serie.overview.length > 200 ? serie.overview.substring(0, 200) + '...' : serie.overview) : 'No hay descripción disponible.'}</p></div><div class="movie-list-actions">${bookmarkBtn}${detailsBtn}</div>`;
                 list.appendChild(listItem);
             });
         }
 
         function attachDynamicEvents() {
             document.querySelectorAll('.btn-details').forEach(btn => {
-                btn.onclick = () => window.location.href = `pelicula_detalle.php?id=${btn.closest('[data-id]').getAttribute('data-id')}`;
+                btn.onclick = () => window.location.href = `serie_detalle.php?id=${btn.closest('[data-id]').getAttribute('data-id')}`;
             });
 
             document.querySelectorAll('.btn-guardar').forEach(btn => {
                 btn.onclick = () => {
                     if (!verificarLogin()) return;
-                    const movieId = btn.getAttribute('data-id');
+                    const serieId = btn.getAttribute('data-id');
                     const tipo = btn.getAttribute('data-tipo');
                     const icon = btn.querySelector('i');
 
@@ -715,7 +658,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded'
                             },
-                            body: `api_id=${movieId}&categoria=${tipo}`
+                            body: `api_id=${serieId}&categoria=${tipo}`
                         })
                         .then(res => res.json())
                         .then(data => {
@@ -729,16 +672,16 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
                 };
             });
         }
-        const loadMoreMovies = () => {
+        const loadMoreSeries = () => {
             if (isLoading || currentPage >= totalPages) return;
             isLoading = true;
             infiniteLoader.style.display = 'block';
 
-            fetch(`../ajax/peliculas_infinite.php?page=${currentPage + 1}&<?= http_build_query($_GET) ?>`)
+            fetch(`../ajax/series_infinite.php?page=${currentPage + 1}&<?= http_build_query($_GET) ?>`)
                 .then(res => res.json())
                 .then(data => {
-                    if (data.peliculas?.length) {
-                        appendMovies(data.peliculas, localStorage.getItem('preferredView') || 'grid');
+                    if (data.series?.length) {
+                        appendSeries(data.series, localStorage.getItem('preferredView') || 'grid');
                         attachDynamicEvents();
                         currentPage++;
                     }

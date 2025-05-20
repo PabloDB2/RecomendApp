@@ -1,0 +1,76 @@
+/*
+  utiliza el css de peliculas solo con algunos cambios pequeños
+*/
+
+.hero-section-series {
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0.8), var(--black-dark)), url("../Images/prisonbreak.png");
+  background-size: cover;
+  background-position: -200px center;
+  padding: 80px 0 0;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.filters-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    margin-bottom: 0;
+    overflow-x: visible;
+}
+
+.filter-item {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.filter-item label {
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.filter-item .form-select {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+.rating-values {
+    min-width: 2.5rem;
+    font-size: 0.8rem;
+}
+
+.platforms-region-selects {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.platform-select,
+.region-select {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+}
+
+@media (max-width:576px) {
+    .filters-row {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        flex-direction: column;
+    }
+    .filter-item {
+        margin-bottom: 0.5rem;
+        min-width: 100%;
+    }
+    .filter-item label {
+        font-size: 0.9rem;
+    }
+    .filter-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+}

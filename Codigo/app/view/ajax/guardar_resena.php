@@ -7,7 +7,7 @@ try {
     require_once(CONTROLLER . 'ResenaController.php');
 
     $api_id = $_POST['api_id'] ?? null;
-    $categoria = $_POST['categoria'] ?? null;
+    $categoria = $_POST['categoria'] ?? null; //sirve para pelicula o serie
     $texto = isset($_POST['texto']) ? trim($_POST['texto']) : null;
     $puntuacion = isset($_POST['puntuacion']) ? intval($_POST['puntuacion']) : 0;
     $accion = $_POST['accion'] ?? 'crear';
