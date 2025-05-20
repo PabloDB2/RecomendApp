@@ -1,16 +1,302 @@
 body {
-    background-color: var(--black-dark);
-    color: var(--white);
-    font-family: var(--font-main);
-    line-height: 1.6;
-    overflow-x: hidden;
-    padding: 0;
-    overflow-y: scroll; /*para que el nav no cambie de posicion cuando hay el scroll vertical */
+background-color: var(--black-dark);
+  color: var(--white);
+  font-family: var(--font-main);
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+}
 
-    margin: 0;
+main {
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.hero-section {
+  position: relative;
+  height: 80vh;
+  min-height: 500px;
+  max-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.8)),
+    linear-gradient(to right, rgba(0, 0, 0, 0.7), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.7)),
+    url("../Images/avatars/bladerunner5.gif");
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(20, 20, 20, 0.9) 100%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--secondary-green);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+    border-color: transparent;
+
+  transition: all var(--transition-normal);
+}
+
+.btn-primary:hover {
+  background-color: var(--green);
+  transform: translateY(-2px);
+  box-shadow: 0 0px 15px var(--green);
+      border-color: transparent;
+
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  position: relative;
+  display: inline-block;
+}
+
+
+.section-link {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color var(--transition-normal);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-link:hover {
+  color: var(--green);
+}
+
+.scroll-row {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  padding: 1rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green);
+  margin: 0 -0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.content-card {
+  flex: 0 0 auto;
+  width: 180px;
+  scroll-snap-align: start;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  color: var(--white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-poster {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+}
+
+.card-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+
+.content-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.content-card:hover .card-poster img {
+  transform: scale(1.1);
+}
+
+.card-info {
+  padding: 5px;
+}
+
+.card-title {
+  font-size: 16px;
+  margin: 0 0 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--green);
+}
+
+.card-rating {
+  color: var(--light-orange);
+}
+
+.genres-section {
+  padding: 2rem 0;
+}
+
+.genre-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  border-radius: var(--border-radius);
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.genre-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow);
+  color: white;
+}
+
+.site-footer {
+  background-color: var(--darker-bg);
+  padding: 2rem 0;
+  margin-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.site-footer h3 {
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+
+.site-footer a {
+  color: var(--green);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 992px) {
+  .hero-title {
+    font-size: 2.8rem;
   }
 
-  main {
-    min-height: 100vh;
-    padding-bottom: 60px;
+  .hero-subtitle {
+    font-size: 1.3rem;
   }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    height: 60vh;
+    min-height: 400px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .content-card {
+    width: 150px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    height: 50vh;
+    min-height: 350px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .content-card {
+    width: 120px;
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+  }
+
+  .genre-card {
+    height: 100px;
+    font-size: 1rem;
+  }
+}
