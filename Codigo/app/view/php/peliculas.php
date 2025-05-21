@@ -17,7 +17,6 @@ if (isset($_SESSION['nombre_usuario'])) {
     }
 }
 
-// GET
 $region = $_GET['region'] ?? 'ES';
 $genero = $_GET['genero'] ?? '';
 $anio = $_GET['anio'] ?? '';
@@ -32,7 +31,7 @@ $rating_min = $_GET['rating_min'] ?? '0';
 $rating_max = $_GET['rating_max'] ?? '10';
 $certificacion = $_GET['certificacion'] ?? '';
 
-// Certificaciones por región
+// cambio de certificaciones de edad USA->España
 $certificaciones = [ 'G' => 'Todas las edades', 'PG' => '+7', 'PG-13' => '+12', 'R' => '+16', 'NC-17' => '+18' ];
 
 $paises = [ 'ES' => 'España', 'US' => 'Estados Unidos', 'FR' => 'Francia', 'DE' => 'Alemania', 'IT' => 'Italia',
@@ -115,20 +114,17 @@ $peliculas = $data['results'] ?? [];
 $total_pages = $data['total_pages'] ?? 1;
 $total_results = $data['total_results'] ?? 0;
 
-
 // Contar filtros activos
 $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveedor, $productora]));
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Películas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Explora y filtra películas por género, año, duración y más">
-
     <!-- pendiente cambiar el favicon con mi logo -->
     <link rel="icon" href="../favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -137,7 +133,6 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
     <!-- precargar las imagenes importantes de la base de datos -->
     <link rel="preconnect" href="https://image.tmdb.org">
 </head>
-
 <body>
     <main>
         <!-- Hero Section (es la seccion destacada en la parte superior de una web-->

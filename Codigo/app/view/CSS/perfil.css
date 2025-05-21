@@ -419,6 +419,19 @@ body {
   margin: 0 auto;
 }
 
+.no-items.solo-texto {
+  background: none;
+  border-radius: 0;
+  color: var(--gray-light);
+  box-shadow: none;
+}
+
+.no-items.solo-texto i {
+  color: var(--gray);
+  font-size: 2.2rem;
+  margin-bottom: 18px;
+}
+
 .back-to-top {
   position: fixed;
   bottom: 30px;

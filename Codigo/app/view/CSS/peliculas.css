@@ -125,8 +125,6 @@ h5 {
 .movie-container:hover .movie-title {
   opacity: 1;
 }
-
-/* Filters Section */
 .filters-section {
   background-color: var(--black-dark);
   border-radius: var(--border-radius-md);
@@ -136,9 +134,8 @@ h5 {
 
 .filter-container {
   padding: 1rem;
-  border: 1px solid var(--light-gray);
   border-radius: var(--border-radius-md);
-  background-color: var(--dark-gray);
+  background-color: var(--black);
   position: relative;
 }
 
@@ -148,7 +145,6 @@ h5 {
   align-items: center;
   margin-bottom: 1rem;
   padding-right: 250px;
-  /* Espacio para los botones */
 }
 
 .filter-title-group {
@@ -176,7 +172,6 @@ h5 {
   background: transparent;
   border: none;
   color: var(--green);
-  background-color: var(--green-lighter);
   padding: 0.5rem;
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -229,7 +224,7 @@ h5 {
 .filter-item .form-select,
 .filter-item .form-control {
   background-color: var(--black-dark);
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--gray-light);
   color: var(--white);
   padding: 0.6rem 0.75rem;
   border-radius: var(--border-radius-sm);
@@ -245,7 +240,7 @@ h5 {
 .filter-item .form-select:hover,
 .filter-item .form-control:hover {
   border-color: var(--green);
-  box-shadow: 0 0 0 1px var(--green-lighter);
+  box-shadow: 0 0 0 1px var(--primary-green);
 }
 
 .filter-item .form-select:focus,
@@ -288,7 +283,7 @@ h5 {
   background-color: var(--black-dark);
   padding: 0.6rem 0.75rem;
   border-radius: var(--border-radius-sm);
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--gray-light);
   border-color: var(--green);
 }
 
@@ -301,7 +296,7 @@ h5 {
 .form-range::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
-  background: linear-gradient(to right, var(--green) 0%, var(--green) var(--rating-percentage, 50%), var(--light-gray) var(--rating-percentage, 50%), var(--light-gray) 100%);
+  background: linear-gradient(to right, var(--green) 0%, var(--green) var(--rating-percentage, 50%), var(--gray-light) var(--rating-percentage, 50%), var(--gray-light) 100%);
   border-radius: 2px;
 }
 
@@ -326,7 +321,7 @@ h5 {
   width: 100%;
   height: 4px;
   margin: 8px 0;
-  background: linear-gradient(to right, var(--green) var(--rating-percentage, 0%), var(--light-gray) var(--rating-percentage, 0%));
+  background: linear-gradient(to right, var(--green) var(--rating-percentage, 0%), var(--gray-light) var(--rating-percentage, 0%));
   border-radius: 2px;
   outline: none;
   position: relative;
@@ -382,7 +377,7 @@ h5 {
   gap: 8px;
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid var(--light-gray);
+  border-top: 1px solid var(--gray-light);
 }
 
 .btn-apply,
@@ -976,15 +971,12 @@ h5 {
   box-shadow: var(--shadow-lg);
 }
 
-/* Carga de ajax */
+/* carga infinita */
 .loading-indicator {
   text-align: center;
-  padding: 20px;
   margin: 20px auto;
   max-width: 300px;
-  background-color: var(--black);
-  border-radius: var(--border-radius-md);
-  box-shadow: var(--shadow-md);
+  background-color: none;
 }
 
 .loading-animation {

@@ -306,13 +306,8 @@ $avatares_disponibles = array_values(array_filter(scandir($carpetaImagenes), fun
 
                 <div id="itemsContainer">
                     <?php if (empty($items_con_detalle)): ?>
-                        <div class="no-items">
-                            <i class="fas fa-<?= $categoria == 'pelicula' ? 'film' : ($categoria == 'serie' ? 'tv' : 'book') ?>"></i>
+                        <div class="no-items solo-texto" style="text-align:center;">
                             <h3>No hay <?= strtolower(obtenerCategoria($categoria)) ?> en tu <?= strtolower(obtenerSeccion($seccion)) ?></h3>
-                            <p>Explora nuestro catálogo para añadir <?= strtolower(obtenerCategoria($categoria)) ?> a tu colección.</p>
-                            <a href="<?= $categoria == 'pelicula' ? 'peliculas.php' : ($categoria == 'serie' ? 'series.php' : 'libros.php') ?>" class="btn btn-outline-light mt-3">
-                                <i class="fas fa-search me-2"></i>Explorar <?= obtenerCategoria($categoria) ?>
-                            </a>
                         </div>
                     <?php else: ?>
                         <div class="items-grid">
