@@ -129,6 +129,13 @@ main {
   padding-bottom: 1.5rem;
 }
 
+
+
+.scroll-row {
+  scrollbar-width: thin;
+  scrollbar-color: var(--green) rgba(0,0,0,0.1);
+}
+
 .content-card {
   flex: 0 0 auto;
   width: 180px;
@@ -196,21 +203,56 @@ main {
   justify-content: center;
   height: 120px;
   border-radius: var(--border-radius);
-  background-size: cover;
+  background-size: 100%;
   background-position: center;
   color: white;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.2rem;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: background-size 0.5s ease, transform 0.3s, box-shadow 0.3s;
   overflow: hidden;
 }
 
 .genre-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--box-shadow);
-  color: white;
+  background-size: 110%;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(0,0,0,0.7);
+  border: none;
+  color: var(--green);
+  font-size: 2.2rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,255,128,0.10);
+  opacity: 0.85;
+}
+.carousel-arrow:hover {
+  background: var(--green);
+  color: var(--black-dark);
+  opacity: 1;
+}
+.carousel-arrow.left {
+  left: 0.2rem;
+}
+.carousel-arrow.right {
+  right: 0.2rem;
+}
+
+/* Contenedor relativo para flechas */
+.carousel-container {
+  position: relative;
 }
 
 .site-footer {
@@ -265,6 +307,12 @@ main {
 
   .content-card {
     width: 150px;
+  }
+
+  .carousel-arrow {
+    font-size: 1.5rem;
+    width: 34px;
+    height: 34px;
   }
 }
 

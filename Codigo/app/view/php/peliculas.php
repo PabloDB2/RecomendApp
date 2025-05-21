@@ -114,6 +114,7 @@ $peliculas = $data['results'] ?? [];
 $total_pages = $data['total_pages'] ?? 1;
 $total_results = $data['total_results'] ?? 0;
 
+
 // Contar filtros activos
 $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveedor, $productora]));
 ?>
@@ -133,6 +134,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $duracion, $proveed
     <!-- precargar las imagenes importantes de la base de datos -->
     <link rel="preconnect" href="https://image.tmdb.org">
 </head>
+
 <body>
     <main>
         <!-- Hero Section (es la seccion destacada en la parte superior de una web-->
