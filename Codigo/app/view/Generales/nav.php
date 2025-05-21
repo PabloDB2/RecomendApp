@@ -3,7 +3,7 @@
 $nombre_usuario = $_SESSION['nombre_usuario'] ?? null;
 $current_page = basename($_SERVER['PHP_SELF']);
 require_once(__DIR__ . '/../../../rutas.php');
-require_once(CONFIG . 'sesion.php'); 
+require_once(CONFIG . 'sesion.php');
 $redirect = urlencode($_SERVER['REQUEST_URI']); // guarda la url actual para redirigir al cerrar sesion
 
 $avatar = 'default-avatar.jpg';
@@ -33,7 +33,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="inicio.php"> 
+        <a class="navbar-brand" href="inicio.php">
             <span class="brand-text">RecomendApp</span>
         </a>
         <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse"
@@ -70,7 +70,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
                 </li>
             </ul>
 
-           <div class="navbar-account ms-lg-auto">
+            <div class="navbar-account ms-lg-auto">
                 <?php if ($nombre_usuario): ?>
                     <div class="dropdown user-dropdown">
                         <a href="#" class="dropdown-toggle user-menu" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,18 +78,19 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
                                 <img src="../Images/avatars/<?php echo htmlspecialchars($avatar); ?>" alt="Avatar" class="user-avatar">
                             </div>
                             <span class="user-name"><?php echo htmlspecialchars($nombre_usuario); ?></span>
-                            <i class="fas fa-chevron-down dropdown-icon"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userDropdown">
-                            
+
                             <li>
                                 <a class="dropdown-item" href="perfil.php">
                                     <i class="fas fa-user dropdown-item-icon"></i>
                                     <span>Mi Perfil</span>
                                 </a>
                             </li>
-                           
-                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <a class="dropdown-item logout-item" href="?logout=true&redirect=<?php echo $redirect; ?>">
                                     <i class="fas fa-sign-out-alt dropdown-item-icon"></i>
