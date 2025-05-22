@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 -- Base de datos: `recomendapp`
 -- --------------------------------------------------------
 
-CREATE DATABASE IF NOT EXISTS `recomendapp`;
-USE `recomendapp`;
+/*CREATE DATABASE IF NOT EXISTS `recomendapp`;
+USE `recomendapp`;*/
 
 -- --------------------------------------------------------
 -- Tabla `usuarios`
@@ -32,7 +32,7 @@ CREATE TABLE `usuarios` (
   `nombre_usuario` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `contraseña` varchar(255) NOT NULL,
-  `avatar` VARCHAR(255) DEFAULT 'default-avatar.jpg',
+  `avatar` VARCHAR(255) DEFAULT '1default-avatar.jpg',
   PRIMARY KEY (`id_usuario`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

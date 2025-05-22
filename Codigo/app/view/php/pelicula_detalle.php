@@ -44,7 +44,7 @@ if ($nombre_usuario && isset($usuario)) {
     $tieneResena = $resenaController->usuarioTieneResena($id_usuario, $movie_id, 'película');
     if ($tieneResena) {
         $resenaUsuario = $resenaController->getResenaUsuario($id_usuario, $movie_id, 'película');
-        $avatarUsuario = $usuario->getAvatar() ?: 'default-avatar.jpg';
+        $avatarUsuario = $usuario->getAvatar() ?: '1default-avatar.jpg';
         $usuarioDioLike = Resena::usuarioDioLike($id_usuario, $resenaUsuario->getIdResena());
     }
 }

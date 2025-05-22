@@ -21,7 +21,7 @@ $usuario = $usuarioController->getUserByName($nombre_usuario);
 $id_usuario = $usuario->getIdUsuario();
 $email = $usuario->getEmail();
 
-$avatar = $usuario->getAvatar() ?? 'default-avatar.jpg';
+$avatar = $usuario->getAvatar() ?? '1default-avatar.jpg';
 $stats = [ // se obtienen las estadisticas de la base de datos
     'peliculas' => [
         'favoritos' => $favoritoController->contarFavoritos($id_usuario, 'pelicula'),

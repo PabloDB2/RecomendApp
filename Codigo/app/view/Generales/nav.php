@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../../../rutas.php');
 require_once(CONFIG . 'sesion.php');
 $redirect = urlencode($_SERVER['REQUEST_URI']); // guarda la url actual para redirigir al cerrar sesion
 
-$avatar = 'default-avatar.jpg';
+$avatar = '1default-avatar.jpg';
 
 if ($nombre_usuario) {
     require_once(CONTROLLER . 'UsuarioController.php');

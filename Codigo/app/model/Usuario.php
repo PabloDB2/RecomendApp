@@ -92,7 +92,7 @@ class Usuario
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
-                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+                $usuario->setAvatar($result['avatar'] ?? '1default-avatar.jpg');
 
                 return $usuario;
             }
@@ -120,7 +120,7 @@ class Usuario
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
-                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+                $usuario->setAvatar($result['avatar'] ?? '1default-avatar.jpg');
 
                 return $usuario;
             }
@@ -178,7 +178,7 @@ class Usuario
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
-                $usuario->setAvatar($result['avatar'] ?? 'default-avatar.jpg');
+                $usuario->setAvatar($result['avatar'] ?? '1default-avatar.jpg');
 
                 return $usuario;
             }
