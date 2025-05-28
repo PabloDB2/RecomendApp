@@ -15,7 +15,7 @@ class PeliculaTest extends TestCase
         $this->assertNotEmpty($data['results']);
     }
 
-    public function testPeliculasOrdenadasPorPuntuacionDesc()
+    public function testPeliculasOrdenadasPorPuntuacionDescendente()
     {
         $api_key = '6bfc367c7d8bc2e83a9e4f5ced5a2bd4';
         $url = "https://api.themoviedb.org/3/discover/movie?api_key=$api_key&language=es-ES&sort_by=vote_average.desc&vote_count.gte=100&page=1";
@@ -27,10 +27,10 @@ class PeliculaTest extends TestCase
         $peliculas = $data['results'];
         $this->assertGreaterThan(1, count($peliculas));
         for ($i = 1; $i < count($peliculas); $i++) {
-            $prev = $peliculas[$i - 1]['vote_average'];
-            $curr = $peliculas[$i]['vote_average'];
+            $previa = $peliculas[$i - 1]['vote_average'];
+            $posicion = $peliculas[$i]['vote_average'];
             $this->assertTrue(
-                $prev >= $curr || abs($prev - $curr) < 0.1
+                $previa >= $posicion || abs($previa - $posicion) < 0.1
             );
         }
     }
