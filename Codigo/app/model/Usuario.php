@@ -65,15 +65,25 @@ class Usuario
 
     public function create()
     {
+        if (empty($this->nombre_usuario)) {
+            return false;
+        }
+
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
         try {
             $conn = getDBConnection();
             $sentencia = $conn->prepare("INSERT INTO usuarios (nombre_usuario, email, contraseña) VALUES (?, ?, ?)");
             $sentencia->bindParam(1, $this->nombre_usuario);
             $sentencia->bindParam(2, $this->email);
             $sentencia->bindParam(3, $this->contraseña);
-            $sentencia->execute();
+            return $sentencia->execute();
         } catch (PDOException $e) {
             echo "Error al registrar el usuario: " . $e->getMessage();
+            return false;
+
         }
     }
 
