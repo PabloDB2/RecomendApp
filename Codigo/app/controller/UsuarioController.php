@@ -60,6 +60,8 @@ class UsuarioController
         if ($contraseña !== null) {
             $usuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
         }
+        // Realizar el update en la base de datos
+        return $usuario->update();
     }
 
     public function eliminarUsuario($id_usuario)
@@ -68,7 +70,9 @@ class UsuarioController
         if (!$usuario) {
             return "Usuario no encontrado.";
         }
+        return $usuario->delete();
     }
+
     public function updateAvatar($nombre_usuario, $avatar)
     {
         try {

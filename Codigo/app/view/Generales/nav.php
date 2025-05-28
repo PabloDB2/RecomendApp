@@ -24,7 +24,7 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
     session_destroy();
     header("Location: " . $redirect_url);
     exit();
-}
+}9
 ?>
 <link rel="stylesheet" href="../Generales/variables.css">
 <link rel="stylesheet" href="../CSS/nav.css">
@@ -87,7 +87,12 @@ if (isset($_GET['logout']) && $_GET['logout'] == 'true') {
                                     <span>Mi Perfil</span>
                                 </a>
                             </li>
-
+                            <li>
+                                <a class="dropdown-item" href="configuracion.php">
+                                    <i class="fas fa-cog dropdown-item-icon"></i>
+                                    <span>Ajustes</span>
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

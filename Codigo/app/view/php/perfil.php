@@ -166,7 +166,7 @@ $avatares_disponibles = array_values(array_filter(scandir($carpetaImagenes), fun
                             <h1 class="profile-username"><?= htmlspecialchars($nombre_usuario) ?></h1>
                         </div>
                         <div class="profile-info">
-                            <h3 class="profile-username"><?= htmlspecialchars($email) ?></h3>
+                            <h3 class="profile-email"><?= htmlspecialchars($email) ?></h3>
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,6 @@ $avatares_disponibles = array_values(array_filter(scandir($carpetaImagenes), fun
                                             </div>
                                         <?php endif; ?>
                                         <div class="item-actions">
-
                                             <button class="btn-action" title="Quitar de <?= strtolower(obtenerSeccion($seccion)) ?>" data-id="<?= $item['id'] ?>" data-tipo="<?= $categoria ?>" data-accion="<?= $seccion ?>">
                                                 <i class="fas fa-times"></i>
                                             </button>
