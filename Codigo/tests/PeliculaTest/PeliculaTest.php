@@ -34,4 +34,42 @@ class PeliculaTest extends TestCase
             );
         }
     }
+
+    public function testAnadirFavoritoGuardaEnSesion()
+    {
+        $_SESSION = [];
+        $idPelicula = 123;
+        // Simula el click en el botón de añadir a favoritos
+        if (!isset($_SESSION['favoritos'])) {
+            $_SESSION['favoritos'] = [];
+        }
+        if (!in_array($idPelicula, $_SESSION['favoritos'])) {
+            $_SESSION['favoritos'][] = $idPelicula;
+        }
+        $this->assertContains($idPelicula, $_SESSION['favoritos']);
+    }
+
+    //  construir la url de imagen de una película
+    public function testConstruirUrlImagenPelicula()
+    {
+        $poster_path = '/abc123.jpg';
+        $tamaño = 'w780'; // utilizado asi para los posters de peliculas
+        $url = "https://image.tmdb.org/t/p/{$tamaño}{$poster_path}";
+        $this->assertEquals('https://image.tmdb.org/t/p/w780/abc123.jpg', $url);
+    }
+
+    // filtrar películas por año
+    public function testFiltrarPeliculasPorAnio()
+    {
+        $peliculas = [
+            ['title' => 'Peli1', 'release_date' => '2022-01-01'],
+            ['title' => 'Peli2', 'release_date' => '2023-05-10'],
+            ['title' => 'Peli3', 'release_date' => '2022-11-20'],
+        ];
+        $anio = '2022';
+        $filtradas = array_filter($peliculas, function($peli) use ($anio) {
+            return strpos($peli['release_date'], $anio) === 0;
+        });
+        $this->assertCount(2, $filtradas);
+    }
 }
