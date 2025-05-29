@@ -60,7 +60,6 @@ class UsuarioController
         if ($contraseña !== null) {
             $usuario->setContraseña(password_hash($contraseña, PASSWORD_DEFAULT));
         }
-        // Realizar el update en la base de datos
         return $usuario->update();
     }
 

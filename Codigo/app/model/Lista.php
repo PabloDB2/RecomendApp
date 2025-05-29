@@ -110,20 +110,6 @@ class Lista
         }
     }
 
-    public static function getListaByUsuario($id_usuario)
-    {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("SELECT * FROM lista WHERE id_usuario = ? ORDER BY id_lista DESC");
-            $sentencia->bindParam(1, $id_usuario);
-            $sentencia->execute();
-            return $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Error al obtener la lista del usuario: " . $e->getMessage());
-            return [];
-        }
-    }
-
     public static function getListaByUsuarioYCategoria($id_usuario, $categoria)
     {
         try {
@@ -136,19 +122,6 @@ class Lista
         } catch (PDOException $e) {
             error_log("Error al obtener la lista del usuario por categoría: " . $e->getMessage());
             return [];
-        }
-    }
-
-    public static function deleteById($id_lista)
-    {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("DELETE FROM lista WHERE id_lista = ?");
-            $sentencia->bindParam(1, $id_lista);
-            return $sentencia->execute();
-        } catch (PDOException $e) {
-            error_log("Error al eliminar elemento de la lista por ID: " . $e->getMessage());
-            return false;
         }
     }
     public static function countByUsuario($id_usuario, $categoria = null)

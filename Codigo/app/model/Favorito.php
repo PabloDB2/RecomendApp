@@ -111,20 +111,6 @@ class Favorito
         }
     }
 
-    public static function getFavoritosByUsuario($id_usuario)
-    {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("SELECT * FROM favoritos WHERE id_usuario = ? ORDER BY id_favorito DESC");
-            $sentencia->bindParam(1, $id_usuario);
-            $sentencia->execute();
-            return $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Error al obtener los favoritos del usuario: " . $e->getMessage());
-            return [];
-        }
-    }
-
     public static function getFavoritosByUsuarioYCategoria($id_usuario, $categoria)
     {
         try {
@@ -140,18 +126,6 @@ class Favorito
         }
     }
 
-    public static function deleteById($id_favorito)
-    {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("DELETE FROM favoritos WHERE id_favorito = ?");
-            $sentencia->bindParam(1, $id_favorito);
-            return $sentencia->execute();
-        } catch (PDOException $e) {
-            error_log("Error al eliminar el favorito por ID: " . $e->getMessage());
-            return false;
-        }
-    }
 
     public static function countByUsuario($id_usuario, $categoria = null)
     {

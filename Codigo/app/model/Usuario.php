@@ -81,9 +81,7 @@ class Usuario
             $sentencia->bindParam(3, $this->contraseña);
             return $sentencia->execute();
         } catch (PDOException $e) {
-            echo "Error al registrar el usuario: " . $e->getMessage();
             return false;
-
         }
     }
 
@@ -109,7 +107,6 @@ class Usuario
 
             return null;
         } catch (PDOException $e) {
-            echo "Error al obtener el usuario: " . $e->getMessage();
             return null;
         }
     }
@@ -126,7 +123,6 @@ class Usuario
 
                 $usuario = new Usuario();
                 $usuario->setIdUsuario($result['id_usuario']);
-
                 $usuario->setNombreUsuario($result['nombre_usuario']);
                 $usuario->setEmail($result['email']);
                 $usuario->setContraseña($result['contraseña']);
@@ -137,7 +133,6 @@ class Usuario
 
             return null;
         } catch (PDOException $e) {
-            echo "Error al obtener el usuario por email: " . $e->getMessage();
             return null;
         }
     }
@@ -153,7 +148,6 @@ class Usuario
 
             return $result ? true : false;
         } catch (PDOException $e) {
-            echo "Error al comprobar email: " . $e->getMessage();
             return false;
         }
     }
@@ -169,7 +163,6 @@ class Usuario
 
             return $result ? true : false;
         } catch (PDOException $e) {
-            echo "Error al comprobar nombre de usuario: " . $e->getMessage();
             return false;
         }
     }
@@ -195,7 +188,6 @@ class Usuario
 
             return null;
         } catch (PDOException $e) {
-            echo "Error al obtener el usuario por ID: " . $e->getMessage();
             return null;
         }
     }
@@ -207,7 +199,6 @@ class Usuario
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
             return $result;
         } catch (PDOException $e) {
-            echo "Error al ejecutar la query" . $e->getMessage();
             return [];
         }
     }
@@ -224,7 +215,6 @@ class Usuario
             $sentencia->bindParam(5, $this->id_usuario);
             return $sentencia->execute();
         } catch (PDOException $e) {
-            echo "Error al actualizar el usuario: " . $e->getMessage();
             return false;
         }
     }
@@ -237,7 +227,6 @@ class Usuario
             $sentencia->bindParam(1, $this->id_usuario);
             return $sentencia->execute();
         } catch (PDOException $e) {
-            echo "Error al eliminar el usuario: " . $e->getMessage();
             return false;
         }
     }

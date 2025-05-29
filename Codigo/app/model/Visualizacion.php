@@ -9,7 +9,6 @@ class Visualizacion {
     private $categoria;
     private $fecha;
     
-    // Getters
     public function getIdVisualizacion() {
         return $this->id_visualizacion;
     }
@@ -30,7 +29,6 @@ class Visualizacion {
         return $this->fecha;
     }
     
-    // Setters
     public function setIdVisualizacion($id_visualizacion) {
         $this->id_visualizacion = $id_visualizacion;
     }
@@ -51,7 +49,6 @@ class Visualizacion {
         $this->fecha = $fecha;
     }
     
-    // Métodos CRUD
     public function create() {
         try {
             if (empty($this->id_usuario) || empty($this->api_id) || empty($this->categoria)) {
@@ -111,19 +108,6 @@ class Visualizacion {
         }
     }
     
-    public static function getVisualizacionesByUsuario($id_usuario) {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("SELECT * FROM visualizaciones WHERE id_usuario = ? ORDER BY fecha DESC");
-            $sentencia->bindParam(1, $id_usuario);
-            $sentencia->execute();
-            return $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Error al obtener las visualizaciones del usuario: " . $e->getMessage());
-            return [];
-        }
-    }
-    
     public static function getVisualizacionesByUsuarioYCategoria($id_usuario, $categoria) {
         try {
             $conn = getDBConnection();
@@ -138,17 +122,6 @@ class Visualizacion {
         }
     }
     
-    public static function deleteById($id_visualizacion) {
-        try {
-            $conn = getDBConnection();
-            $sentencia = $conn->prepare("DELETE FROM visualizaciones WHERE id_visualizacion = ?");
-            $sentencia->bindParam(1, $id_visualizacion);
-            return $sentencia->execute();
-        } catch (PDOException $e) {
-            error_log("Error al eliminar la visualización por ID: " . $e->getMessage());
-            return false;
-        }
-    }
     public static function countByUsuario($id_usuario, $categoria = null) {
         try {
             $conn = getDBConnection();
