@@ -6,95 +6,6 @@ asi que solo es necesario añadir las cosas nuevas)*/
   color: var(--green);
 }
 
-.seasons-list {
-  margin-top: 20px;
-}
-
-.season-item {
-  background-color: var(--black-light);
-  border-radius: var(--border-radius-sm);
-  margin-bottom: 15px;
-  overflow: hidden;
-  transition: transform 0.2s;
-}
-
-.season-item:hover {
-  transform: translateY(-3px);
-}
-
-.season-header {
-  padding: 15px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.season-title {
-  margin: 0;
-  font-size: 1.1rem;
-  color: var(--white);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.season-title i {
-  color: var(--green);
-  transition: transform 0.3s;
-}
-
-.season-title.collapsed i {
-  transform: rotate(-90deg);
-}
-
-.season-info {
-  color: var(--gray-light);
-  font-size: 0.9rem;
-}
-
-.season-content {
-  padding: 0 15px 15px;
-  border-top: 1px solid var(--black);
-}
-
-.episode-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.episode-item {
-  display: flex;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--black);
-}
-
-.episode-item:last-child {
-  border-bottom: none;
-}
-
-.episode-number {
-  width: 30px;
-  font-weight: bold;
-  color: var(--green);
-}
-
-.episode-details {
-  flex: 1;
-}
-
-.episode-title {
-  margin: 0 0 5px;
-  font-size: 1rem;
-}
-
-.episode-overview {
-  color: var(--gray-light);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
 .network-logo {
   max-width: 100px;
   max-height: 50px;
@@ -108,3 +19,4 @@ asi que solo es necesario añadir las cosas nuevas)*/
   align-items: center;
   margin-bottom: 15px;
 }
+
