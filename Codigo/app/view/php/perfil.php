@@ -124,7 +124,7 @@ function obtenerSeccion($seccion)
     return $nombres[$seccion] ?? $seccion;
 }
 
-$carpetaImagenes = '../images/avatars/';
+$carpetaImagenes = '../Images/avatars/';
 $avatares_disponibles = array_values(array_filter(scandir($carpetaImagenes), function ($imagen) use ($carpetaImagenes) {
     return is_file($carpetaImagenes . $imagen);
 }));

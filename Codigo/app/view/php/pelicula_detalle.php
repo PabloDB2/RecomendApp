@@ -347,7 +347,7 @@ $languages = [
                                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                                             <div>
                                                                 <div class="review-avatar me-3">
-                                                            <img src="../images/avatars/<?= htmlspecialchars($avatar) ?>" class="rounded-circle" width="50" height="50">
+                                                            <img src="../Images/avatars/<?= htmlspecialchars($avatar) ?>" class="rounded-circle" width="50" height="50">
                                                         <span class="ms-2">
                                                                     <?php for ($i = 1; $i <= 5; $i++): ?>
                                                                         <i class="fas fa-star <?= $i <= $resenaUsuario->getPuntuacion() ? 'text-warning' : 'text-muted' ?>"></i>
@@ -447,8 +447,8 @@ $languages = [
                                             ?>
                                                 <div class="review-item mb-4">
                                                     <div class="d-flex">
-                                                        <div class="review-avatar2 me-3">
-                                                            <img src="../images/avatars/<?= htmlspecialchars($resena['avatar']) ?>" alt="<?= htmlspecialchars($resena['nombre_usuario']) ?>" class="rounded-circle" width="50" height="50">
+                                                        <div class="review-avatar me-3">
+                                                            <img src="../Images/avatars/<?= htmlspecialchars($resena['avatar']) ?>" alt="<?= htmlspecialchars($resena['nombre_usuario']) ?>" class="rounded-circle" width="50" height="50">
                                                         </div>
                                                         <div class="review-content w-100">
                                                             <div class="d-flex justify-content-between align-items-center mb-2">

@@ -57,7 +57,7 @@ function renderReview($r, $id_usuario, $nombre_usuario)
     <div class="review-item mb-4">
         <div class="d-flex">
             <div class="review-avatar me-3">
-                <img src="../images/avatars/<?= htmlspecialchars($r['avatar']) ?>" alt="<?= htmlspecialchars($r['nombre_usuario']) ?>" class="rounded-circle" width="50" height="50">
+                <img src="../Images/avatars/<?= htmlspecialchars($r['avatar']) ?>" alt="<?= htmlspecialchars($r['nombre_usuario']) ?>" class="rounded-circle" width="50" height="50">
             </div>
             <div class="review-content w-100">
                 <div class="d-flex justify-content-between align-items-center mb-2">

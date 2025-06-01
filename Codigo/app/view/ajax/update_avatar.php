@@ -14,7 +14,7 @@ $avatar = $_POST['avatar'];
 $nombre_usuario = $_SESSION['nombre_usuario'];
 
 
-$carpetaImagenes = '../images/avatars/'; //carpeta con todos los avatares
+$carpetaImagenes = '../Images/avatars/'; //carpeta con todos los avatares
 $avatares_disponibles = array_values(array_filter(scandir($carpetaImagenes), function($file) use ($carpetaImagenes) {
     return is_file($carpetaImagenes . $file);
 }));
