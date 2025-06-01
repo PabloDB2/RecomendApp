@@ -168,7 +168,7 @@ $active_filters = count(array_filter([$genero, $anio, $pais, $proveedor, $produc
                             </button>
                         </div>
                     </div>
-                    <div class="filter-body" id="filterBody">
+                    <div class="filter-body collapsed" id="filterBody">
                         <form method="get" action="" id="filterForm">
                             <div class="filters-row">
                                 <div class="filter-item">
