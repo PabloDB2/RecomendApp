@@ -30,11 +30,12 @@
    
 El proyecto debe estar en /xampp/htdocs/
 
-![image](https://github.com/user-attachments/assets/a1120fd0-5210-46fc-8a8d-dae9d010bb7c)
+![image](https://github.com/user-attachments/assets/7956ba32-fb38-4f5d-85b0-b72efee95b67)
 
 4. Abre el archivo inicio.php en tu navegador:
 
-![image](https://github.com/user-attachments/assets/2452de0a-ef70-42ed-a24b-0385b5865997)
+![image](https://github.com/user-attachments/assets/ed299ab9-0e65-4407-bbfe-61ab88debabf)
+
 
 ## Capturas de pantalla
 
